@@ -389,6 +389,9 @@ class Ui_MainWindow(object):
         icon12.addPixmap(QtGui.QPixmap("images/left.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionLeft.setIcon(icon12)
         self.actionLeft.setObjectName("actionLeft")
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap("images/playasfast.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionPlay_as_fast_as_possible.setIcon(icon13)
         self.menuASCII_CSV_files.addAction(self.actionImport_signal_from_CSV_decimal_dot)
         self.menuASCII_CSV_files.addAction(self.actionImport_signal_from_CSV_decimal_comma)
         self.menuFile.addAction(self.actionOpen_signal)
@@ -425,7 +428,7 @@ class Ui_MainWindow(object):
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionZoom_In)
         self.menuEdit.addAction(self.actionZoom_out)
-        self.menuEdit.addAction(self.actionLeft)
+        # self.menuEdit.addAction(self.actionLeft)
         self.menuPlay_navigate.addAction(self.action_Signal_beginning)
         self.menuPlay_navigate.addAction(self.actionSignal_End)
         self.menuPlay_navigate.addSeparator()
@@ -441,7 +444,9 @@ class Ui_MainWindow(object):
         self.menuPlay_navigate.addSeparator()
         self.menuPlay_navigate.addAction(self.actionStep_change)
         self.menuPlay_navigate.addSeparator()
-        self.menuPlay_navigate.addAction(self.actionRight)
+        self.menuPlay_navigate.addAction(self.actionLeft) 
+        self.menuPlay_navigate.addAction(self.actionRight) 
+        self.menuPlay_navigate.addSeparator()
         self.menuPlay_navigate.addAction(self.actionAdjust_volume_automatically)
         self.menuPlay_navigate.addSeparator()
         self.menuPlay_navigate.addAction(self.actionPlay_automatically_if_signal_changes)
@@ -459,15 +464,15 @@ class Ui_MainWindow(object):
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionZoom_In)
         self.toolBar.addAction(self.actionZoom_out)
+        self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionLeft)
+        self.toolBar.addAction(self.actionRight)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.action_Signal_beginning)
         self.toolBar.addAction(self.actionPlay_signal_no_sound)
         self.toolBar.addAction(self.actionSignal_End)
         self.toolBar.addAction(self.actionStop_playing)
         self.toolBar.addAction(self.actionPlay_as_fast_as_possible)
-        self.toolBar.addSeparator()
-        self.toolBar.addAction(self.actionRight)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionTime_FFT)
         self.toolBar.addAction(self.actionSpectrogram)
@@ -555,7 +560,7 @@ class Ui_MainWindow(object):
         self.actionStep_change.setStatusTip(_translate("MainWindow", "Change step for moving trough signals"))
         self.actionStep_change.setShortcut(_translate("MainWindow", "Alt+Up, Alt+Down"))
         self.actionRight.setText(_translate("MainWindow", "scroll to right"))
-        self.actionRight.setStatusTip(_translate("MainWindow", "Start playing signal from the beginning each time its end has been reached"))
+        # self.actionRight.setStatusTip(_translate("MainWindow", "Start playing signal from the beginning each time its end has been reached"))
         self.actionAdjust_volume_automatically.setText(_translate("MainWindow", "Adjust volume automatically"))
         self.actionPlay_automatically_if_signal_changes.setText(_translate("MainWindow", "Play automatically if signal changes"))
         self.actionPlay_automatically_if_signal_changes.setStatusTip(_translate("MainWindow", "Play signal on sound card on every change"))
@@ -570,12 +575,16 @@ class Ui_MainWindow(object):
         self.actionPaste.setText(_translate("MainWindow", "Paste"))
         self.actionPaste.setShortcut(_translate("MainWindow", "Ctrl+V"))
         self.actionZoom_In.setText(_translate("MainWindow", "Zoom In"))
+        self.actionZoom_In.setShortcut(_translate("MainWindow", "Ctrl++"))
         self.actionZoom_In.setStatusTip(_translate("MainWindow", "Zoom selected part"))
         self.actionZoom_out.setText(_translate("MainWindow", "Zoom out"))
+        self.actionZoom_out.setShortcut(_translate("MainWindow", "Ctrl+-"))
         self.actionZoom_out.setStatusTip(_translate("MainWindow", "Show previous zoom"))
-        self.actionLeft.setText(_translate("MainWindow", "scroll to Left..."))
+        self.actionLeft.setText(_translate("MainWindow", "scroll to left"))
         self.actionLeft.setStatusTip(_translate("MainWindow", "scroll left"))
+        self.actionRight.setStatusTip(_translate("MainWindow", "scroll right"))
         self.actionLeft.setShortcut(_translate("MainWindow", "Ctrl+2"))
+        self.actionRight.setShortcut(_translate("MainWindow", "Ctrl+3"))
 
     
     #open for signals .wav , .edf
@@ -692,9 +701,11 @@ class Ui_MainWindow(object):
         else:
             x_start = self.signals[self.selected_signal].waveform.getAxis("bottom").range[0]
             x_end = self.signals[self.selected_signal].waveform.getAxis("bottom").range[1]
-            print(x_start)
-            print(x_end)
-            self.signals[self.selected_signal].waveform.setXRange(x_start-10 , x_end-20, padding=0.005)
+            # print(x_start)
+            # print(x_end)
+            if (x_start-10 < 0): self.signal_beginning(1)
+            else:
+                self.signals[self.selected_signal].waveform.setXRange(x_start-10 , x_end-20,  padding=0.005)   
     
 
     #to signal end
@@ -707,9 +718,11 @@ class Ui_MainWindow(object):
         else:
             x_start = self.signals[self.selected_signal].waveform.getAxis("bottom").range[0]
             x_end = self.signals[self.selected_signal].waveform.getAxis("bottom").range[1]
-            print(x_start)
-            print(x_end)
-            self.signals[self.selected_signal].waveform.setXRange(x_start+20 , x_end+10, padding=0.005)
+            # print(x_start)
+            # print(x_end)
+            if (x_end+10 > len(self.signals[self.selected_signal].data)): self.signal_end(1)
+            else: 
+                self.signals[self.selected_signal].waveform.setXRange(x_start+20 , x_end+10, padding=0.005)
    
 
     #delete closed signal

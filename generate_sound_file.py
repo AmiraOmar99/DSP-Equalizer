@@ -4,7 +4,6 @@ import struct
 
 
 
-
 #audio is a global variable containing a list of all samples
 audio = []
 
@@ -13,18 +12,18 @@ sample_rate = 44100.0
 
 
 
-def append_sinewave(
-        freq=440.0, 
-        duration_milliseconds=500, 
-        volume=1.0):
-
+def create_signal(f1 = 500, f2 = 600, f3 = 880, f4 = 0 , f5 = 0, duration_seconds = 2):
     global audio
-
-    num_samples = duration_milliseconds * (sample_rate / 1000.0)
+    num_samples = duration_seconds * sample_rate
 
     for x in range(int(num_samples)):
-        audio.append(volume * math.sin(2 * math.pi * freq * ( x / sample_rate )))
-
+        sig1 = math.sin(2 * math.pi * f1 * ( x / sample_rate ))
+        sig2 = math.cos(2 * math.pi * f2 * ( x / sample_rate ))
+        sig3 = math.cos(2 * math.pi * f3 * ( x / sample_rate ))
+        sig4 = math.sin(2 * math.pi * f4 * ( x / sample_rate ))
+        sig5 = math.sin(2 * math.pi * f5 * ( x / sample_rate ))
+        audio.append(sig1 + sig2 + sig3 + sig4 + sig5)
+    
     return
 
 
@@ -42,18 +41,15 @@ def save_wav(file_name):
     compname = "not compressed"
     wav_file.setparams((nchannels, sampwidth, sample_rate, nframes, comptype, compname))
 
-    # WAV files here are using short, 16 bit, signed integers for the 
-    # sample size.  So we multiply the floating point data we have by 32767, the
-    # maximum value for a short integer.
+
     for sample in audio:
-        wav_file.writeframes(struct.pack('h', int( sample * 32767.0 )))
+        wav_file.writeframes(struct.pack('h', int( sample * 1000.0 )))
 
     wav_file.close()
 
     return
 
-for i in range(1,11):
-    append_sinewave(freq=100*i)
 
+create_signal()
     
 save_wav("soundfile.wav")
