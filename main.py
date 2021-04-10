@@ -85,7 +85,8 @@ class Signal(PlotWidget):
         #to send signal when clicked
         self.waveform2.scene().sigMouseClicked.connect(lambda : ui.detect_click(self.file_path))
         self.win2.closeEvent=self.closeEvent
-
+        
+        
 
     #fft for signal 
     def signal_fft(self):
@@ -93,6 +94,43 @@ class Signal(PlotWidget):
         self.magnitude_spectrum=np.abs(self.fft) #for calculating magnitude spectrum
         self.phase_spectrum=np.angle(self.fft)
         self.frequencies= np.fft.rfftfreq(len(self.data), d=1 / self.sample_rate)
+    
+    def generate_band(self):
+        b1=[]
+        b2=[]
+        b3=[]
+        b4=[]
+        b5=[]
+        b6=[]
+        b7=[]
+        b8=[]
+        b9=[]
+        b10=[]
+        freqs=np.sort(self.frequencies)
+        for freq in freqs:
+            if freqs[0] <= freq < (freqs[-1]/10):
+                b1.append(freq)
+            if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
+                b2.append(freq)
+            if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
+                b3.append(freq)
+            if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
+                b4.append(freq)
+            if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
+                b5.append(freq)
+            if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
+                b6.append(freq)
+            if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
+                b7.append(freq)
+            if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
+                b8.append(freq)
+            if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
+                b9.append(freq)
+            if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
+                b10.append(freq)
+        #print(b10)
+    def slider(self,band, level):
+        new_band = [f * level for f in band]
 
     def plot_fft_magnitude(self):
         #plot magnitude spectrum
@@ -627,6 +665,7 @@ class Ui_MainWindow(object):
         self.signals[path].signal_fft()
         #print(self.signals[path].fft)
         #self.signals[path].plot_fft()
+        self.signals[path].equalizer()
         
 
     def inverse_fft(self):
