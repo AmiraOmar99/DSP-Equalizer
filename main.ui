@@ -63,7 +63,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-280</y>
+                   <y>-220</y>
                    <width>711</width>
                    <height>880</height>
                   </rect>
@@ -160,7 +160,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_13">
+                          <widget class="QSlider" name="eq_Slider_1">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -185,7 +191,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_17">
+                          <widget class="QSlider" name="eq_Slider_2">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -210,7 +222,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_15">
+                          <widget class="QSlider" name="eq_Slider_3">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -235,7 +253,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_18">
+                          <widget class="QSlider" name="eq_Slider_4">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -260,7 +284,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_20">
+                          <widget class="QSlider" name="eq_Slider_5">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -285,7 +315,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_21">
+                          <widget class="QSlider" name="eq_Slider_6">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -310,7 +346,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_19">
+                          <widget class="QSlider" name="eq_Slider_7">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -335,7 +377,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_16">
+                          <widget class="QSlider" name="eq_Slider_8">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -360,7 +408,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_14">
+                          <widget class="QSlider" name="eq_Slider_9">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -385,7 +439,13 @@
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
-                          <widget class="QSlider" name="verticalSlider_10">
+                          <widget class="QSlider" name="eq_Slider_10">
+                           <property name="maximum">
+                            <number>5</number>
+                           </property>
+                           <property name="value">
+                            <number>1</number>
+                           </property>
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
@@ -566,14 +626,14 @@
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_24">
                       <item alignment="Qt::AlignHCenter">
-                       <widget class="QSlider" name="verticalSlider_22">
+                       <widget class="QSlider" name="specSlider1">
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
                         </property>
                        </widget>
                       </item>
                       <item alignment="Qt::AlignHCenter">
-                       <widget class="QLabel" name="specSlider1">
+                       <widget class="QLabel" name="specLabel1">
                         <property name="text">
                          <string>TextLabel</string>
                         </property>
@@ -584,14 +644,14 @@
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_25">
                       <item alignment="Qt::AlignHCenter">
-                       <widget class="QSlider" name="verticalSlider_23">
+                       <widget class="QSlider" name="specSlider2">
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
                         </property>
                        </widget>
                       </item>
                       <item alignment="Qt::AlignHCenter">
-                       <widget class="QLabel" name="specSlider2">
+                       <widget class="QLabel" name="specLabel2">
                         <property name="text">
                          <string>TextLabel</string>
                         </property>
