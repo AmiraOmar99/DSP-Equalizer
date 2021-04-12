@@ -45,6 +45,7 @@ class Signal(PlotWidget):
         #initial plot range
         self.x_range=[0,2000]
         
+        
     #pg configurations
     pg.setConfigOptions(background='w')
     #anti aliasing to improve the appearance of a small image that's being scaled up
@@ -94,43 +95,48 @@ class Signal(PlotWidget):
         self.magnitude_spectrum=np.abs(self.fft) #for calculating magnitude spectrum
         self.phase_spectrum=np.angle(self.fft)
         self.frequencies= np.fft.rfftfreq(len(self.data), d=1 / self.sample_rate)
+
     
     def generate_band(self):
-        b1=[]
-        b2=[]
-        b3=[]
-        b4=[]
-        b5=[]
-        b6=[]
-        b7=[]
-        b8=[]
-        b9=[]
-        b10=[]
+        self.b1=[]
+        self.b2=[]
+        self.b3=[]
+        self.b4=[]
+        self.b5=[]
+        self.b6=[]
+        self.b7=[]
+        self.b8=[]
+        self.b9=[]
+        self.b10=[]
         freqs=np.sort(self.frequencies)
         for freq in freqs:
             if freqs[0] <= freq < (freqs[-1]/10):
-                b1.append(freq)
+                self.b1.append(freq)
             if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
-                b2.append(freq)
+                self.b2.append(freq)
             if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
-                b3.append(freq)
+                self.b3.append(freq)
             if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
-                b4.append(freq)
+                self.b4.append(freq)
             if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
-                b5.append(freq)
+                self.b5.append(freq)
             if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
-                b6.append(freq)
+                self.b6.append(freq)
             if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
-                b7.append(freq)
+                self.b7.append(freq)
             if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
-                b8.append(freq)
+                self.b8.append(freq)
             if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
-                b9.append(freq)
+                self.b9.append(freq)
             if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
-                b10.append(freq)
-        #print(b10)
-    def slider(self,band, level):
-        new_band = [f * level for f in band]
+                self.b10.append(freq)
+        #print(self.b1)
+
+  
+    # def new_freq(self):
+    #     n_freq=[]
+    #     for band in new_bands:
+    #         n_freq= n_freq + band
 
     def plot_fft_magnitude(self):
         #plot magnitude spectrum
@@ -838,7 +844,22 @@ class Ui_MainWindow(object):
 
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
 
-        
+        self.eq_Slider_1.valueChanged.connect(self.slider_step)
+        self.eq_Slider_2.valueChanged.connect(self.slider_step)
+        self.eq_Slider_3.valueChanged.connect(self.slider_step)
+        self.eq_Slider_4.valueChanged.connect(self.slider_step)
+        self.eq_Slider_5.valueChanged.connect(self.slider_step)
+        self.eq_Slider_6.valueChanged.connect(self.slider_step)
+        self.eq_Slider_7.valueChanged.connect(self.slider_step)
+        self.eq_Slider_8.valueChanged.connect(self.slider_step)
+        self.eq_Slider_9.valueChanged.connect(self.slider_step)
+        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+
+
+
+
+
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1000,8 +1021,9 @@ class Ui_MainWindow(object):
         self.signals[path].signal_fft()
         #print(self.signals[path].fft)
         #self.signals[path].plot_fft()
-        self.signals[path].equalizer()
-        
+        self.signals[path].generate_band()
+
+       
 
     def inverse_fft(self):
         self.signals[self.selected_signal].inverse_fft()
@@ -1153,7 +1175,38 @@ class Ui_MainWindow(object):
         plt.ylabel('Frequency(Hz)')
         fig.savefig('plot.png')
         #plt.show()
+    
+    def slider_step(self):
+        current_val_1 = self.eq_Slider_1.value()
+        current_val_2= self.eq_Slider_2.value()
+        current_val_3 = self.eq_Slider_3.value()
+        current_val_4 = self.eq_Slider_4.value()
+        current_val_5 = self.eq_Slider_5.value()
+        current_val_6 = self.eq_Slider_6.value()
+        current_val_7= self.eq_Slider_7.value()
+        current_val_8 = self.eq_Slider_8.value()
+        current_val_9= self.eq_Slider_9.value()
+        current_val_10= self.eq_Slider_10.value()
 
+        new_band_1 = [f * current_val_1 for f in self.signals[self.selected_signal].b1]
+        new_band_2 = [f * current_val_2 for f in self.signals[self.selected_signal].b2]
+        new_band_3 = [f * current_val_3 for f in self.signals[self.selected_signal].b3]
+        new_band_4 = [f * current_val_4 for f in self.signals[self.selected_signal].b4]
+        new_band_5 = [f * current_val_5 for f in self.signals[self.selected_signal].b5]
+        new_band_6 = [f * current_val_6 for f in self.signals[self.selected_signal].b6]
+        new_band_7 = [f * current_val_7 for f in self.signals[self.selected_signal].b7]
+        new_band_8 = [f * current_val_8 for f in self.signals[self.selected_signal].b8]
+        new_band_9 = [f * current_val_9 for f in self.signals[self.selected_signal].b9]
+        new_band_10 = [f * current_val_10 for f in self.signals[self.selected_signal].b10]
+
+        new_freq= new_band_1 + new_band_2 + new_band_3 +new_band_4+new_band_5+new_band_6+new_band_7+new_band_8+new_band_9+new_band_10
+
+        #new_freq= new_band + self.signals[self.selected_signal].b2 + self.signals[self.selected_signal].b3 + self.signals[self.selected_signal].b4 +self.signals[self.selected_signal].b5+ self.signals[self.selected_signal].b6 + self.signals[self.selected_signal].b7 + self.signals[self.selected_signal].b8 + self.signals[self.selected_signal].b9 + self.signals[self.selected_signal].b10
+        
+        #print(new_band)
+        #print(new_freq)
+
+    
     
 
 if __name__ == "__main__":
