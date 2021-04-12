@@ -45,6 +45,7 @@ class Signal(PlotWidget):
         #initial plot range
         self.x_range=[0,2000]
         
+        
     #pg configurations
     pg.setConfigOptions(background='w')
     #anti aliasing to improve the appearance of a small image that's being scaled up
@@ -94,43 +95,48 @@ class Signal(PlotWidget):
         self.magnitude_spectrum=np.abs(self.fft) #for calculating magnitude spectrum
         self.phase_spectrum=np.angle(self.fft)
         self.frequencies= np.fft.rfftfreq(len(self.data), d=1 / self.sample_rate)
+
     
     def generate_band(self):
-        b1=[]
-        b2=[]
-        b3=[]
-        b4=[]
-        b5=[]
-        b6=[]
-        b7=[]
-        b8=[]
-        b9=[]
-        b10=[]
+        self.b1=[]
+        self.b2=[]
+        self.b3=[]
+        self.b4=[]
+        self.b5=[]
+        self.b6=[]
+        self.b7=[]
+        self.b8=[]
+        self.b9=[]
+        self.b10=[]
         freqs=np.sort(self.frequencies)
         for freq in freqs:
             if freqs[0] <= freq < (freqs[-1]/10):
-                b1.append(freq)
+                self.b1.append(freq)
             if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
-                b2.append(freq)
+                self.b2.append(freq)
             if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
-                b3.append(freq)
+                self.b3.append(freq)
             if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
-                b4.append(freq)
+                self.b4.append(freq)
             if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
-                b5.append(freq)
+                self.b5.append(freq)
             if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
-                b6.append(freq)
+                self.b6.append(freq)
             if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
-                b7.append(freq)
+                self.b7.append(freq)
             if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
-                b8.append(freq)
+                self.b8.append(freq)
             if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
-                b9.append(freq)
+                self.b9.append(freq)
             if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
-                b10.append(freq)
-        #print(b10)
-    def slider(self,band, level):
-        new_band = [f * level for f in band]
+                self.b10.append(freq)
+        #print(self.b1)
+
+  
+    # def new_freq(self):
+    #     n_freq=[]
+    #     for band in new_bands:
+    #         n_freq= n_freq + band
 
     def plot_fft_magnitude(self):
         #plot magnitude spectrum
@@ -296,7 +302,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_5 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_5.setGeometry(QtCore.QRect(0, -280, 711, 880))
+        self.scrollAreaWidgetContents_5.setGeometry(QtCore.QRect(0, -220, 711, 880))
         self.scrollAreaWidgetContents_5.setObjectName("scrollAreaWidgetContents_5")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_5)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -341,10 +347,12 @@ class Ui_MainWindow(object):
         self.gain1 = QtWidgets.QLabel(self.frame_5)
         self.gain1.setObjectName("gain1")
         self.verticalLayout_8.addWidget(self.gain1, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_13 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_13.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_13.setObjectName("verticalSlider_13")
-        self.verticalLayout_8.addWidget(self.verticalSlider_13, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_1 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_1.setMaximum(5)
+        self.eq_Slider_1.setProperty("value", 1)
+        self.eq_Slider_1.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_1.setObjectName("eq_Slider_1")
+        self.verticalLayout_8.addWidget(self.eq_Slider_1, 0, QtCore.Qt.AlignHCenter)
         self.freq_range1 = QtWidgets.QLabel(self.frame_5)
         self.freq_range1.setObjectName("freq_range1")
         self.verticalLayout_8.addWidget(self.freq_range1, 0, QtCore.Qt.AlignHCenter)
@@ -354,10 +362,12 @@ class Ui_MainWindow(object):
         self.gain2 = QtWidgets.QLabel(self.frame_5)
         self.gain2.setObjectName("gain2")
         self.verticalLayout_12.addWidget(self.gain2, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_17 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_17.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_17.setObjectName("verticalSlider_17")
-        self.verticalLayout_12.addWidget(self.verticalSlider_17, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_2 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_2.setMaximum(5)
+        self.eq_Slider_2.setProperty("value", 1)
+        self.eq_Slider_2.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_2.setObjectName("eq_Slider_2")
+        self.verticalLayout_12.addWidget(self.eq_Slider_2, 0, QtCore.Qt.AlignHCenter)
         self.freq_range2 = QtWidgets.QLabel(self.frame_5)
         self.freq_range2.setObjectName("freq_range2")
         self.verticalLayout_12.addWidget(self.freq_range2, 0, QtCore.Qt.AlignHCenter)
@@ -367,10 +377,12 @@ class Ui_MainWindow(object):
         self.gain3 = QtWidgets.QLabel(self.frame_5)
         self.gain3.setObjectName("gain3")
         self.verticalLayout_10.addWidget(self.gain3, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_15 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_15.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_15.setObjectName("verticalSlider_15")
-        self.verticalLayout_10.addWidget(self.verticalSlider_15, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_3 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_3.setMaximum(5)
+        self.eq_Slider_3.setProperty("value", 1)
+        self.eq_Slider_3.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_3.setObjectName("eq_Slider_3")
+        self.verticalLayout_10.addWidget(self.eq_Slider_3, 0, QtCore.Qt.AlignHCenter)
         self.freq_range3 = QtWidgets.QLabel(self.frame_5)
         self.freq_range3.setObjectName("freq_range3")
         self.verticalLayout_10.addWidget(self.freq_range3, 0, QtCore.Qt.AlignHCenter)
@@ -380,10 +392,12 @@ class Ui_MainWindow(object):
         self.gain4 = QtWidgets.QLabel(self.frame_5)
         self.gain4.setObjectName("gain4")
         self.verticalLayout_13.addWidget(self.gain4, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_18 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_18.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_18.setObjectName("verticalSlider_18")
-        self.verticalLayout_13.addWidget(self.verticalSlider_18, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_4 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_4.setMaximum(5)
+        self.eq_Slider_4.setProperty("value", 1)
+        self.eq_Slider_4.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_4.setObjectName("eq_Slider_4")
+        self.verticalLayout_13.addWidget(self.eq_Slider_4, 0, QtCore.Qt.AlignHCenter)
         self.freq_range4 = QtWidgets.QLabel(self.frame_5)
         self.freq_range4.setObjectName("freq_range4")
         self.verticalLayout_13.addWidget(self.freq_range4, 0, QtCore.Qt.AlignHCenter)
@@ -393,10 +407,12 @@ class Ui_MainWindow(object):
         self.gain5 = QtWidgets.QLabel(self.frame_5)
         self.gain5.setObjectName("gain5")
         self.verticalLayout_15.addWidget(self.gain5, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_20 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_20.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_20.setObjectName("verticalSlider_20")
-        self.verticalLayout_15.addWidget(self.verticalSlider_20, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_5 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_5.setMaximum(5)
+        self.eq_Slider_5.setProperty("value", 1)
+        self.eq_Slider_5.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_5.setObjectName("eq_Slider_5")
+        self.verticalLayout_15.addWidget(self.eq_Slider_5, 0, QtCore.Qt.AlignHCenter)
         self.freq_range5 = QtWidgets.QLabel(self.frame_5)
         self.freq_range5.setObjectName("freq_range5")
         self.verticalLayout_15.addWidget(self.freq_range5, 0, QtCore.Qt.AlignHCenter)
@@ -406,10 +422,12 @@ class Ui_MainWindow(object):
         self.gain6 = QtWidgets.QLabel(self.frame_5)
         self.gain6.setObjectName("gain6")
         self.verticalLayout_16.addWidget(self.gain6, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_21 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_21.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_21.setObjectName("verticalSlider_21")
-        self.verticalLayout_16.addWidget(self.verticalSlider_21, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_6 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_6.setMaximum(5)
+        self.eq_Slider_6.setProperty("value", 1)
+        self.eq_Slider_6.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_6.setObjectName("eq_Slider_6")
+        self.verticalLayout_16.addWidget(self.eq_Slider_6, 0, QtCore.Qt.AlignHCenter)
         self.freq_range6 = QtWidgets.QLabel(self.frame_5)
         self.freq_range6.setObjectName("freq_range6")
         self.verticalLayout_16.addWidget(self.freq_range6, 0, QtCore.Qt.AlignHCenter)
@@ -419,10 +437,12 @@ class Ui_MainWindow(object):
         self.gain7 = QtWidgets.QLabel(self.frame_5)
         self.gain7.setObjectName("gain7")
         self.verticalLayout_14.addWidget(self.gain7, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_19 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_19.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_19.setObjectName("verticalSlider_19")
-        self.verticalLayout_14.addWidget(self.verticalSlider_19, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_7 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_7.setMaximum(5)
+        self.eq_Slider_7.setProperty("value", 1)
+        self.eq_Slider_7.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_7.setObjectName("eq_Slider_7")
+        self.verticalLayout_14.addWidget(self.eq_Slider_7, 0, QtCore.Qt.AlignHCenter)
         self.freq_range7 = QtWidgets.QLabel(self.frame_5)
         self.freq_range7.setObjectName("freq_range7")
         self.verticalLayout_14.addWidget(self.freq_range7, 0, QtCore.Qt.AlignHCenter)
@@ -432,10 +452,12 @@ class Ui_MainWindow(object):
         self.gain8 = QtWidgets.QLabel(self.frame_5)
         self.gain8.setObjectName("gain8")
         self.verticalLayout_11.addWidget(self.gain8, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_16 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_16.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_16.setObjectName("verticalSlider_16")
-        self.verticalLayout_11.addWidget(self.verticalSlider_16, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_8 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_8.setMaximum(5)
+        self.eq_Slider_8.setProperty("value", 1)
+        self.eq_Slider_8.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_8.setObjectName("eq_Slider_8")
+        self.verticalLayout_11.addWidget(self.eq_Slider_8, 0, QtCore.Qt.AlignHCenter)
         self.freq_range8 = QtWidgets.QLabel(self.frame_5)
         self.freq_range8.setObjectName("freq_range8")
         self.verticalLayout_11.addWidget(self.freq_range8, 0, QtCore.Qt.AlignHCenter)
@@ -445,10 +467,12 @@ class Ui_MainWindow(object):
         self.gain9 = QtWidgets.QLabel(self.frame_5)
         self.gain9.setObjectName("gain9")
         self.verticalLayout_9.addWidget(self.gain9, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_14 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_14.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_14.setObjectName("verticalSlider_14")
-        self.verticalLayout_9.addWidget(self.verticalSlider_14, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_9 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_9.setMaximum(5)
+        self.eq_Slider_9.setProperty("value", 1)
+        self.eq_Slider_9.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_9.setObjectName("eq_Slider_9")
+        self.verticalLayout_9.addWidget(self.eq_Slider_9, 0, QtCore.Qt.AlignHCenter)
         self.freq_range9 = QtWidgets.QLabel(self.frame_5)
         self.freq_range9.setObjectName("freq_range9")
         self.verticalLayout_9.addWidget(self.freq_range9, 0, QtCore.Qt.AlignHCenter)
@@ -458,10 +482,12 @@ class Ui_MainWindow(object):
         self.gain10 = QtWidgets.QLabel(self.frame_5)
         self.gain10.setObjectName("gain10")
         self.verticalLayout_5.addWidget(self.gain10, 0, QtCore.Qt.AlignHCenter)
-        self.verticalSlider_10 = QtWidgets.QSlider(self.frame_5)
-        self.verticalSlider_10.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_10.setObjectName("verticalSlider_10")
-        self.verticalLayout_5.addWidget(self.verticalSlider_10, 0, QtCore.Qt.AlignHCenter)
+        self.eq_Slider_10 = QtWidgets.QSlider(self.frame_5)
+        self.eq_Slider_10.setMaximum(5)
+        self.eq_Slider_10.setProperty("value", 1)
+        self.eq_Slider_10.setOrientation(QtCore.Qt.Vertical)
+        self.eq_Slider_10.setObjectName("eq_Slider_10")
+        self.verticalLayout_5.addWidget(self.eq_Slider_10, 0, QtCore.Qt.AlignHCenter)
         self.freq_range10 = QtWidgets.QLabel(self.frame_5)
         self.freq_range10.setObjectName("freq_range10")
         self.verticalLayout_5.addWidget(self.freq_range10, 0, QtCore.Qt.AlignHCenter)
@@ -540,28 +566,29 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addLayout(self.verticalLayout_21)
         self.verticalLayout_24 = QtWidgets.QVBoxLayout()
         self.verticalLayout_24.setObjectName("verticalLayout_24")
-        self.verticalSlider_22 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
-        self.verticalSlider_22.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_22.setObjectName("verticalSlider_22")
-        self.verticalLayout_24.addWidget(self.verticalSlider_22, 0, QtCore.Qt.AlignHCenter)
-        self.specSlider1 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
+        self.specSlider1 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
+        self.specSlider1.setOrientation(QtCore.Qt.Vertical)
         self.specSlider1.setObjectName("specSlider1")
         self.verticalLayout_24.addWidget(self.specSlider1, 0, QtCore.Qt.AlignHCenter)
+        self.specLabel1 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
+        self.specLabel1.setObjectName("specLabel1")
+        self.verticalLayout_24.addWidget(self.specLabel1, 0, QtCore.Qt.AlignHCenter)
         self.horizontalLayout_4.addLayout(self.verticalLayout_24)
         self.verticalLayout_25 = QtWidgets.QVBoxLayout()
         self.verticalLayout_25.setObjectName("verticalLayout_25")
-        self.verticalSlider_23 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
-        self.verticalSlider_23.setOrientation(QtCore.Qt.Vertical)
-        self.verticalSlider_23.setObjectName("verticalSlider_23")
-        self.verticalLayout_25.addWidget(self.verticalSlider_23, 0, QtCore.Qt.AlignHCenter)
-        self.specSlider2 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
+        self.specSlider2 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
+        self.specSlider2.setOrientation(QtCore.Qt.Vertical)
         self.specSlider2.setObjectName("specSlider2")
         self.verticalLayout_25.addWidget(self.specSlider2, 0, QtCore.Qt.AlignHCenter)
+        self.specLabel2 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
+        self.specLabel2.setObjectName("specLabel2")
+        self.verticalLayout_25.addWidget(self.specLabel2, 0, QtCore.Qt.AlignHCenter)
         self.horizontalLayout_4.addLayout(self.verticalLayout_25)
         self.verticalLayout_22.addLayout(self.horizontalLayout_4)
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_6)
         self.verticalLayout_23.addWidget(self.scrollArea_3)
         self.horizontalLayout.addWidget(self.frame_3)
+
 
         self.verticalLayout_2.addWidget(self.frame)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -817,7 +844,22 @@ class Ui_MainWindow(object):
 
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
 
-        
+        self.eq_Slider_1.valueChanged.connect(self.slider_step)
+        self.eq_Slider_2.valueChanged.connect(self.slider_step)
+        self.eq_Slider_3.valueChanged.connect(self.slider_step)
+        self.eq_Slider_4.valueChanged.connect(self.slider_step)
+        self.eq_Slider_5.valueChanged.connect(self.slider_step)
+        self.eq_Slider_6.valueChanged.connect(self.slider_step)
+        self.eq_Slider_7.valueChanged.connect(self.slider_step)
+        self.eq_Slider_8.valueChanged.connect(self.slider_step)
+        self.eq_Slider_9.valueChanged.connect(self.slider_step)
+        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+
+
+
+
+
+
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -855,8 +897,8 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
-        self.specSlider1.setText(_translate("MainWindow", "TextLabel"))
-        self.specSlider2.setText(_translate("MainWindow", "TextLabel"))
+        self.specLabel1.setText(_translate("MainWindow", "TextLabel"))
+        self.specLabel2.setText(_translate("MainWindow", "TextLabel"))
 
         self.menuFile.setStatusTip(_translate("MainWindow", "Creates a new document"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
@@ -979,8 +1021,9 @@ class Ui_MainWindow(object):
         self.signals[path].signal_fft()
         #print(self.signals[path].fft)
         #self.signals[path].plot_fft()
-        self.signals[path].equalizer()
-        
+        self.signals[path].generate_band()
+
+       
 
     def inverse_fft(self):
         self.signals[self.selected_signal].inverse_fft()
@@ -1132,7 +1175,38 @@ class Ui_MainWindow(object):
         plt.ylabel('Frequency(Hz)')
         fig.savefig('plot.png')
         #plt.show()
+    
+    def slider_step(self):
+        current_val_1 = self.eq_Slider_1.value()
+        current_val_2= self.eq_Slider_2.value()
+        current_val_3 = self.eq_Slider_3.value()
+        current_val_4 = self.eq_Slider_4.value()
+        current_val_5 = self.eq_Slider_5.value()
+        current_val_6 = self.eq_Slider_6.value()
+        current_val_7= self.eq_Slider_7.value()
+        current_val_8 = self.eq_Slider_8.value()
+        current_val_9= self.eq_Slider_9.value()
+        current_val_10= self.eq_Slider_10.value()
 
+        new_band_1 = [f * current_val_1 for f in self.signals[self.selected_signal].b1]
+        new_band_2 = [f * current_val_2 for f in self.signals[self.selected_signal].b2]
+        new_band_3 = [f * current_val_3 for f in self.signals[self.selected_signal].b3]
+        new_band_4 = [f * current_val_4 for f in self.signals[self.selected_signal].b4]
+        new_band_5 = [f * current_val_5 for f in self.signals[self.selected_signal].b5]
+        new_band_6 = [f * current_val_6 for f in self.signals[self.selected_signal].b6]
+        new_band_7 = [f * current_val_7 for f in self.signals[self.selected_signal].b7]
+        new_band_8 = [f * current_val_8 for f in self.signals[self.selected_signal].b8]
+        new_band_9 = [f * current_val_9 for f in self.signals[self.selected_signal].b9]
+        new_band_10 = [f * current_val_10 for f in self.signals[self.selected_signal].b10]
+
+        new_freq= new_band_1 + new_band_2 + new_band_3 +new_band_4+new_band_5+new_band_6+new_band_7+new_band_8+new_band_9+new_band_10
+
+        #new_freq= new_band + self.signals[self.selected_signal].b2 + self.signals[self.selected_signal].b3 + self.signals[self.selected_signal].b4 +self.signals[self.selected_signal].b5+ self.signals[self.selected_signal].b6 + self.signals[self.selected_signal].b7 + self.signals[self.selected_signal].b8 + self.signals[self.selected_signal].b9 + self.signals[self.selected_signal].b10
+        
+        #print(new_band)
+        #print(new_freq)
+
+    
     
 
 if __name__ == "__main__":
