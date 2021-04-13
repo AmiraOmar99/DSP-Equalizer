@@ -284,10 +284,13 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_3.stateChanged.connect(self.color_pallette)
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
-
-
+        #self.specSlider1.valueChanged.connect(self.spec_range)
+        #self.specSlider2.valueChanged.connect(self.spec_range)
         self.showMaximized()
         self.show()
+
+    #def spec_range(self):
+
 
     def open_window(self):
         color_cmap="plasma"
@@ -308,11 +311,12 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 self.signals_windows[self.path] = self
             else:
                 self.signals_windows[self.path] = OtherWindows()
+                print("xxxxxxxxxxxxxxxxxxx")
                 self.signals_windows[self.path].config(self.path)
 
             # load .wav data
-            self.original_data, self.sample_rate = sf.read(self.path)
-            self.modified_data = self.original_data
+            self.signals_windows[self.path].original_data, self.signals_windows[self.path].sample_rate = sf.read(self.path)
+            self.signals_windows[self.path].modified_data = self.signals_windows[self.path].original_data
             # create signal object and plot
             self.signals_windows[self.path].create_signal()
 
@@ -344,6 +348,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # for plotting after reading signal
     def plot(self, data):
+        print(data)
         data_plot = PlotWidget()
         x_range = [min(data), min(data) + 2000]
         x = np.arange(0, len(self.original_data), 1)
@@ -361,6 +366,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = np.abs(self.fft)  # for calculating magnitude spectrum
         self.phase_spectrum = np.angle(self.fft)
         self.frequencies = np.fft.rfftfreq(len(self.original_data), d=1 / self.sample_rate)
+        print(len(self.frequencies))
+        print(len(self.magnitude_spectrum))
 
     def inverse_fft(self):
         fft = np.multiply(self.magnitude_spectrum, np.exp(1j * self.phase_spectrum))
@@ -506,8 +513,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
+
     def color_pallette(self):
-        colors=['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
+        colors = ['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
         if self.checkBox_1.isChecked():
             self.spectro_draw(colors[1])
         elif self.checkBox_2.isChecked():
@@ -520,11 +528,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.spectro_draw(colors[5])
         else:
             self.spectro_draw(colors[0])
-
-
-
-
-
 
     # # emit path of the last clicked on signal
     # def detect_click(self, file_path):
