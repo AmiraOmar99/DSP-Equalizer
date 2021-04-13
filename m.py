@@ -79,43 +79,10 @@ class Signal(PlotWidget):
         self.waveform2.scene().sigMouseClicked.connect(lambda: ui.detect_click(self.file_path))
         self.win2.closeEvent = self.closeEvent
 
-    def generate_band(self):
-        b1 = []
-        b2 = []
-        b3 = []
-        b4 = []
-        b5 = []
-        b6 = []
-        b7 = []
-        b8 = []
-        b9 = []
-        b10 = []
-        freqs = np.sort(self.frequencies)
-        for freq in freqs:
-            if freqs[0] <= freq < (freqs[-1] / 10):
-                b1.append(freq)
-            if (freqs[-1] / 10) <= freq < (2 * (freqs[-1] / 10)):
-                b2.append(freq)
-            if (2 * (freqs[-1] / 10)) <= freq < (3 * (freqs[-1] / 10)):
-                b3.append(freq)
-            if (3 * (freqs[-1] / 10)) <= freq < (4 * (freqs[-1] / 10)):
-                b4.append(freq)
-            if (4 * (freqs[-1] / 10)) <= freq < (5 * (freqs[-1] / 10)):
-                b5.append(freq)
-            if (5 * (freqs[-1] / 10)) <= freq < (6 * (freqs[-1] / 10)):
-                b6.append(freq)
-            if (6 * (freqs[-1] / 10)) <= freq < (7 * (freqs[-1] / 10)):
-                b7.append(freq)
-            if (7 * (freqs[-1] / 10)) <= freq < (8 * (freqs[-1] / 10)):
-                b8.append(freq)
-            if (8 * (freqs[-1] / 10)) <= freq < (9 * (freqs[-1] / 10)):
-                b9.append(freq)
-            if (9 * (freqs[-1] / 10)) <= freq <= (freqs[-1]):
-                b10.append(freq)
-        # print(b10)
+    
 
-    def slider(self, band, level):
-        new_band = [f * level for f in band]
+    # def slider(self, band, level):
+    #     new_band = [f * level for f in band]
 
     def plot_fft_magnitude(self):
         # plot magnitude spectrum
@@ -285,6 +252,17 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
 
+        self.eq_Slider_1.valueChanged.connect(self.slider_step)
+        self.eq_Slider_2.valueChanged.connect(self.slider_step)
+        self.eq_Slider_3.valueChanged.connect(self.slider_step)
+        self.eq_Slider_4.valueChanged.connect(self.slider_step)
+        self.eq_Slider_5.valueChanged.connect(self.slider_step)
+        self.eq_Slider_6.valueChanged.connect(self.slider_step)
+        self.eq_Slider_7.valueChanged.connect(self.slider_step)
+        self.eq_Slider_8.valueChanged.connect(self.slider_step)
+        self.eq_Slider_9.valueChanged.connect(self.slider_step)
+        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+
 
         self.showMaximized()
         self.show()
@@ -326,6 +304,55 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             #     data = np.array(df.iloc[:, 1])
             #     # create signa object and plot
             #     self.create_signal(path, data)
+    def generate_band(self):
+        self.b1=[]
+        self.b2=[]
+        self.b3=[]
+        self.b4=[]
+        self.b5=[]
+        self.b6=[]
+        self.b7=[]
+        self.b8=[]
+        self.b9=[]
+        self.b10=[]
+        freqs=np.sort(self.frequencies)
+        for freq in self.frequencies:
+            if freqs[0] <= freq < (freqs[-1]/10):
+                self.b1.append(freq)
+            if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
+                self.b2.append(freq)
+            if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
+                self.b3.append(freq)
+            if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
+                self.b4.append(freq)
+            if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
+                self.b5.append(freq)
+            if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
+                self.b6.append(freq)
+            if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
+                self.b7.append(freq)
+            if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
+                self.b8.append(freq)
+            if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
+                self.b9.append(freq)
+            if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
+                self.b10.append(freq)
+        # print(b10)
+    
+    def get_amplitude(self):
+        b = len(self.b1)
+        As=[]
+        self.A1=list(self.magnitude_spectrum[:b])
+        self.A2=list(self.magnitude_spectrum[b:2*b])
+        self.A3=list(self.magnitude_spectrum[2*b:3*b])
+        self.A4=list(self.magnitude_spectrum[3*b:4*b])
+        self.A5=list(self.magnitude_spectrum[4*b:5*b])
+        self.A6=list(self.magnitude_spectrum[5*b:6*b])
+        self.A7=list(self.magnitude_spectrum[6*b:7*b])
+        self.A8=list(self.magnitude_spectrum[7*b:8*b])
+        self.A9=list(self.magnitude_spectrum[8*b:9*b])
+        self.A10=list(self.magnitude_spectrum[9*b:(10*b+1)])
+        As= self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
 
     # create Signal object and plot signal
     def create_signal(self):
@@ -341,6 +368,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.signal_fft()
         # print(self.fft)
         self.play_signal(3)  # to be changed to step
+
+        self.generate_band()
+        self.get_amplitude()
 
     # for plotting after reading signal
     def plot(self, data):
@@ -521,9 +551,36 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         else:
             self.spectro_draw(colors[0])
 
+    def slider_step(self):
+        current_val_1 = self.eq_Slider_1.value()
+        current_val_2= self.eq_Slider_2.value()
+        current_val_3 = self.eq_Slider_3.value()
+        current_val_4 = self.eq_Slider_4.value()
+        current_val_5 = self.eq_Slider_5.value()
+        current_val_6 = self.eq_Slider_6.value()
+        current_val_7= self.eq_Slider_7.value()
+        current_val_8 = self.eq_Slider_8.value()
+        current_val_9= self.eq_Slider_9.value()
+        current_val_10= self.eq_Slider_10.value()
 
-
-
+        new_band_1 = [a * current_val_1 for a in self.A1]
+        new_band_2 = [a * current_val_2 for a in self.A2]
+        #new_band_2 = [a * current_val_2 for a in self.signals[self.selected_signal].A2]
+        new_band_3 = [a * current_val_3 for a in self.A3]
+        new_band_4 = [a * current_val_4 for a in self.A4]
+        new_band_5 = [a * current_val_5 for a in self.A5]
+        new_band_6 = [a * current_val_6 for a in self.A6]
+        new_band_7 = [a * current_val_7 for a in self.A7]
+        new_band_8 = [a * current_val_8 for a in self.A8]
+        new_band_9 = [a * current_val_9 for a in self.A9]
+        new_band_10 = [a * current_val_10 for a in self.A10]
+        
+        new_amp= new_band_1 + new_band_2 + new_band_3 +new_band_4+new_band_5+new_band_6+new_band_7+new_band_8+new_band_9+new_band_10
+    
+        #print(new_band_1)
+        #print(len(new_band_1))
+        print(new_amp)
+        # print(len(new_amp))
 
 
     # # emit path of the last clicked on signal
