@@ -265,6 +265,17 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.eq_Slider_9.valueChanged.connect(self.slider_step)
         self.eq_Slider_10.valueChanged.connect(self.slider_step)
 
+        self.eq_Slider_1.valueChanged.connect(self.slider_step)
+        self.eq_Slider_2.valueChanged.connect(self.slider_step)
+        self.eq_Slider_3.valueChanged.connect(self.slider_step)
+        self.eq_Slider_4.valueChanged.connect(self.slider_step)
+        self.eq_Slider_5.valueChanged.connect(self.slider_step)
+        self.eq_Slider_6.valueChanged.connect(self.slider_step)
+        self.eq_Slider_7.valueChanged.connect(self.slider_step)
+        self.eq_Slider_8.valueChanged.connect(self.slider_step)
+        self.eq_Slider_9.valueChanged.connect(self.slider_step)
+        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+
 
         self.showMaximized()
         self.show()
@@ -357,7 +368,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.A8=list(self.magnitude_spectrum[7*b:8*b])
         self.A9=list(self.magnitude_spectrum[8*b:9*b])
         self.A10=list(self.magnitude_spectrum[9*b:(10*b+1)])
-        As = self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
+        As= self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
 
     # create Signal object and plot signal
     def create_signal(self):
