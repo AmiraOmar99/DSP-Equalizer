@@ -507,17 +507,19 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
     def color_pallette(self):
-        colors=['Purples', 'Blues', 'Greens', 'Oranges','cool']
+        colors=['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
         if self.checkBox_1.isChecked():
-            self.spectro_draw(colors[0])
-        elif self.checkBox_2.isChecked():
             self.spectro_draw(colors[1])
-        elif self.checkBox_3.isChecked():
+        elif self.checkBox_2.isChecked():
             self.spectro_draw(colors[2])
-        elif self.checkBox_4.isChecked():
+        elif self.checkBox_3.isChecked():
             self.spectro_draw(colors[3])
-        elif self.checkBox_5.isChecked():
+        elif self.checkBox_4.isChecked():
             self.spectro_draw(colors[4])
+        elif self.checkBox_5.isChecked():
+            self.spectro_draw(colors[5])
+        else:
+            self.spectro_draw(colors[0])
 
 
 
