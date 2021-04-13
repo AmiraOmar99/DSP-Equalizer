@@ -279,15 +279,23 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.Export_pdf.triggered.connect(self.E_pdf)
         self.actionSpectrogram.triggered.connect(self.open_window)
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
+        self.checkBox_1.stateChanged.connect(self.color_pallette)
+        self.checkBox_2.stateChanged.connect(self.color_pallette)
+        self.checkBox_3.stateChanged.connect(self.color_pallette)
+        self.checkBox_4.stateChanged.connect(self.color_pallette)
+        self.checkBox_5.stateChanged.connect(self.color_pallette)
+
 
         self.showMaximized()
         self.show()
 
     def open_window(self):
-        self.spectro_draw()
+        color_cmap="plasma"
+        self.spectro_draw(color_cmap)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
+
         #self.window.show()
 
     # open for signals .wav , .edf
@@ -491,13 +499,30 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.pdf.build(self.elems)
         print("Report is done")
 
-    def spectro_draw(self):
+    def spectro_draw(self,colorcmap):
         # clearing old figure
         self.figure.clear()
-        plt.specgram(self.original_data, Fs=1000)
+        plt.specgram(self.original_data, Fs=self.sample_rate,cmap=colorcmap)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
+    def color_pallette(self):
+        colors=['Purples', 'Blues', 'Greens', 'Oranges','cool']
+        if self.checkBox_1.isChecked():
+            self.spectro_draw(colors[0])
+        elif self.checkBox_2.isChecked():
+            self.spectro_draw(colors[1])
+        elif self.checkBox_3.isChecked():
+            self.spectro_draw(colors[2])
+        elif self.checkBox_4.isChecked():
+            self.spectro_draw(colors[3])
+        elif self.checkBox_5.isChecked():
+            self.spectro_draw(colors[4])
+
+
+
+
+
 
     # # emit path of the last clicked on signal
     # def detect_click(self, file_path):
