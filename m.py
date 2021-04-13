@@ -24,9 +24,9 @@ from reportlab.platypus import Image
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Table
 from reportlab.platypus import TableStyle
-
 import mainlayout
 from spectrogram import Ui_OtherWindow
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 
 # signal class
@@ -42,7 +42,7 @@ class Signal(PlotWidget):
         self.magnitude_spectrum = None
         self.phase_spectrum = None
         self.modified_data = None
-        #initial plot range
+        # initial plot range
         self.x_range = [0, 2000]
 
     # pg configurations
@@ -288,24 +288,25 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
-        self.window.show()
+        #self.window.show()
 
     # open for signals .wav , .edf
 
     def open_sig(self):
         print("open_sig")
         self.path = PyQt5.QtWidgets.QFileDialog.getOpenFileName(None, 'Open', None, "WAV (*.wav)")[0]
-        if len(self.signals_windows) == 0:
-            self.signals_windows[self.path] = self
-        else:
-            self.signals_windows[self.path] = OtherWindows()
-            self.signals_windows[self.path].config(self.path)
+        if self.path:
+            if len(self.signals_windows) == 0:
+                self.signals_windows[self.path] = self
+            else:
+                self.signals_windows[self.path] = OtherWindows()
+                self.signals_windows[self.path].config(self.path)
 
-        # load .wav data
-        self.original_data, self.sample_rate = sf.read(self.path)
-        self.modified_data = self.original_data
-        # create signal object and plot
-        self.signals_windows[self.path].create_signal()
+            # load .wav data
+            self.original_data, self.sample_rate = sf.read(self.path)
+            self.modified_data = self.original_data
+            # create signal object and plot
+            self.signals_windows[self.path].create_signal()
 
     # open for signals .csv
     def open_csv(self):
@@ -324,6 +325,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.modified_waveform = self.plot(self.modified_data)
         self.verticalLayout_6.addWidget(self.original_waveform)
         self.verticalLayout_7.addWidget(self.modified_waveform)
+        self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
 
@@ -331,8 +333,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.signal_fft()
         # print(self.fft)
         self.play_signal(3)  # to be changed to step
-
-
 
     # for plotting after reading signal
     def plot(self, data):
@@ -492,13 +492,12 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         print("Report is done")
 
     def spectro_draw(self):
-        fig = plt.figure()
+        # clearing old figure
+        self.figure.clear()
         plt.specgram(self.original_data, Fs=1000)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
-        self.widget(plt)
-        fig.savefig('plot.png')
-        # plt.show()
+        self.canvas.draw()
 
     # # emit path of the last clicked on signal
     # def detect_click(self, file_path):

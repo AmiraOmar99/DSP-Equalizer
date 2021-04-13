@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.pyplot as plt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -284,78 +285,119 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.scrollArea_2)
         self.horizontalLayout.addWidget(self.frame_2)
         self.frame_3 = QtWidgets.QFrame(self.frame)
+        self.frame_3.setObjectName(u"frame_3")
         self.frame_3.setMinimumSize(QtCore.QSize(500, 0))
         self.frame_3.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_3.setObjectName("frame_3")
         self.verticalLayout_23 = QtWidgets.QVBoxLayout(self.frame_3)
-        self.verticalLayout_23.setObjectName("verticalLayout_23")
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
         self.scrollArea_3 = QtWidgets.QScrollArea(self.frame_3)
+        self.scrollArea_3.setObjectName(u"scrollArea_3")
         self.scrollArea_3.setWidgetResizable(True)
-        self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_6 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 478, 430))
-        self.scrollAreaWidgetContents_6.setObjectName("scrollAreaWidgetContents_6")
+        self.scrollAreaWidgetContents_6.setObjectName(u"scrollAreaWidgetContents_6")
+        self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 453, 411))
         self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_6)
-        self.verticalLayout_22.setObjectName("verticalLayout_22")
-        self.label_3 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
-        self.label_3.setMinimumSize(QtCore.QSize(0, 10))
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-        self.verticalLayout_22.addWidget(self.label_3)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.widget = QtWidgets.QWidget(self.scrollAreaWidgetContents_6)
-        self.widget.setMinimumSize(QtCore.QSize(0, 250))
-        self.widget.setObjectName("widget")
+        self.widget.setObjectName(u"widget")
+        self.widget.setMinimumSize(QtCore.QSize(0, 600))
+        self.label_3 = QtWidgets.QLabel(self.widget)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setGeometry(QtCore.QRect(0, -20, 431, 71))
+        self.label_3.setMinimumSize(QtCore.QSize(0, 10))
+        font1 = QtGui.QFont()
+        font1.setPointSize(16)
+        self.label_3.setFont(font1)
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.widget)
+        self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(-10, 40, 880, 500))
+
+        self.figure = plt.figure()
+        # this is the Canvas Widget that
+        # displays the 'figure'it takes the
+        # 'figure' instance as a parameter to __init__
+        self.canvas = FigureCanvas(self.figure)
+
+        self.verticalLayout_27 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_27.setObjectName(u"verticalLayout_27")
+        self.verticalLayout_27.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_27.addWidget(self.canvas)
         self.verticalLayout_22.addWidget(self.widget)
+
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_21 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_21.setObjectName("verticalLayout_21")
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.checkBox_1 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_1.setObjectName("checkBox_1")
+        self.checkBox_1.setObjectName(u"checkBox_1")
+
         self.verticalLayout_21.addWidget(self.checkBox_1)
+
         self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_2.setObjectName("checkBox_2")
+        self.checkBox_2.setObjectName(u"checkBox_2")
+
         self.verticalLayout_21.addWidget(self.checkBox_2)
+
         self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_3.setObjectName("checkBox_3")
+        self.checkBox_3.setObjectName(u"checkBox_3")
+
         self.verticalLayout_21.addWidget(self.checkBox_3)
+
         self.checkBox_4 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_4.setObjectName("checkBox_4")
+        self.checkBox_4.setObjectName(u"checkBox_4")
+
         self.verticalLayout_21.addWidget(self.checkBox_4)
+
         self.checkBox_5 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_5.setObjectName("checkBox_5")
+        self.checkBox_5.setObjectName(u"checkBox_5")
+
         self.verticalLayout_21.addWidget(self.checkBox_5)
+
         self.horizontalLayout_4.addLayout(self.verticalLayout_21)
+
         self.verticalLayout_24 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_24.setObjectName("verticalLayout_24")
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
         self.specSlider1 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
+        self.specSlider1.setObjectName(u"specSlider1")
         self.specSlider1.setOrientation(QtCore.Qt.Vertical)
-        self.specSlider1.setObjectName("specSlider1")
+
         self.verticalLayout_24.addWidget(self.specSlider1, 0, QtCore.Qt.AlignHCenter)
+
         self.specLabel1 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
-        self.specLabel1.setObjectName("specLabel1")
+        self.specLabel1.setObjectName(u"specLabel1")
+
         self.verticalLayout_24.addWidget(self.specLabel1, 0, QtCore.Qt.AlignHCenter)
+
         self.horizontalLayout_4.addLayout(self.verticalLayout_24)
+
         self.verticalLayout_25 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_25.setObjectName("verticalLayout_25")
+        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.specSlider2 = QtWidgets.QSlider(self.scrollAreaWidgetContents_6)
+        self.specSlider2.setObjectName(u"specSlider2")
         self.specSlider2.setOrientation(QtCore.Qt.Vertical)
-        self.specSlider2.setObjectName("specSlider2")
+
         self.verticalLayout_25.addWidget(self.specSlider2, 0, QtCore.Qt.AlignHCenter)
+
         self.specLabel2 = QtWidgets.QLabel(self.scrollAreaWidgetContents_6)
-        self.specLabel2.setObjectName("specLabel2")
+        self.specLabel2.setObjectName(u"specLabel2")
+
         self.verticalLayout_25.addWidget(self.specLabel2, 0, QtCore.Qt.AlignHCenter)
+
         self.horizontalLayout_4.addLayout(self.verticalLayout_25)
+
         self.verticalLayout_22.addLayout(self.horizontalLayout_4)
+
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_6)
+
         self.verticalLayout_23.addWidget(self.scrollArea_3)
+
         self.horizontalLayout.addWidget(self.frame_3)
 
         self.verticalLayout_2.addWidget(self.frame)
+
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
         self.verticalLayout.addWidget(self.scrollArea)
 
         self.frame.hide()
@@ -624,9 +666,8 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
-<<<<<<< HEAD
-        self.specSlider1.setText(_translate("MainWindow", "TextLabel"))
-        self.specSlider2.setText(_translate("MainWindow", "TextLabel"))
+        #self.specSlider1.setText(_translate("MainWindow", "TextLabel"))
+        #self.specSlider2.setText(_translate("MainWindow", "TextLabel"))
 
         self.menuFile.setStatusTip(_translate("MainWindow", "Creates a new document"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
@@ -717,6 +758,7 @@ class Ui_MainWindow(object):
         self.actionLeft.setShortcut(_translate("MainWindow", "Ctrl+2"))
         self.actionRight.setShortcut(_translate("MainWindow", "Ctrl+3"))
 
+
 ######################################################################################3
 
 # class Child ():
@@ -743,9 +785,9 @@ class Ui_MainWindow(object):
 #     def __init__(self, parent=None):
 #         # super().__init__(parent)
 #         self.setupUi(self)
-=======
-        self.specLabel1.setText(_translate("MainWindow", "TextLabel"))
-        self.specLabel2.setText(_translate("MainWindow", "TextLabel"))
+#
+#         self.specLabel1.setText(_translate("MainWindow", "TextLabel"))
+#         self.specLabel2.setText(_translate("MainWindow", "TextLabel"))
 
 
 if __name__ == "__main__":
@@ -756,4 +798,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
->>>>>>> 5d4550cc4be52d206c911c06e670285bebf36b48
