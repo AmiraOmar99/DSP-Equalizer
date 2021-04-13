@@ -278,7 +278,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
-
         #self.window.show()
 
     # open for signals .wav , .edf
@@ -291,7 +290,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 self.signals_windows[self.path] = self
             else:
                 self.signals_windows[self.path] = OtherWindows()
-                print("xxxxxxxxxxxxxxxxxxx")
                 self.signals_windows[self.path].config(self.path)
 
             # load .wav data
@@ -348,6 +346,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
     def get_amplitude(self):
         b = len(self.b1)
         As=[]
+        print("llllllll")
         self.A1=list(self.magnitude_spectrum[:b])
         self.A2=list(self.magnitude_spectrum[b:2*b])
         self.A3=list(self.magnitude_spectrum[2*b:3*b])
@@ -358,7 +357,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.A8=list(self.magnitude_spectrum[7*b:8*b])
         self.A9=list(self.magnitude_spectrum[8*b:9*b])
         self.A10=list(self.magnitude_spectrum[9*b:(10*b+1)])
-        As= self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
+        As = self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
 
     # create Signal object and plot signal
     def create_signal(self):
@@ -380,7 +379,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # for plotting after reading signal
     def plot(self, data):
-        print(data)
         data_plot = PlotWidget()
         x_range = [min(data), min(data) + 2000]
         x = np.arange(0, len(self.original_data), 1)
