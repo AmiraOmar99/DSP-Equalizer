@@ -137,7 +137,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = None
         self.phase_spectrum = None
         self.modified_data = None
-        self.spec_mag = None
+        self.spec_mag =self.modified_data
 
         # plots
         self.original_waveform = None
@@ -196,7 +196,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         min_index = None
         max_index = None
         min_freq = self.specSlider1.value()
-        max_freq = self.specSlider1.value()
+        max_freq = self.specSlider2.value()
 
         if min_freq < min(self.frequencies):
             min_index = 0
@@ -211,8 +211,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             max_index = int(np.where(self.frequencies == max_freq)[0])
 
         modified_fft = np.fft.rfft(self.modified_data)
-        modified_fft = modified_fft[max_index:max_index+1]
+        modified_fft = modified_fft[min_index:max_index+1]
         self.spec_mag = np.fft.irfft(modified_fft)
+        self.open_window()
 
 
     def open_window(self):
@@ -237,6 +238,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             # load .wav data
             self.signals_windows[self.path].original_data, self.signals_windows[self.path].sample_rate = sf.read(self.path)
             self.signals_windows[self.path].modified_data = self.signals_windows[self.path].original_data
+            self.signals_windows[self.path].spec_mag = self.signals_windows[self.path].modified_data
+
             # create signal object and plot
             self.signals_windows[self.path].create_signal()
 
@@ -479,7 +482,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     def spectro_draw(self,colorcmap):
         self.pallette = colorcmap
-        self.spec_range()
         # clearing old figure
         self.figure.clear()
         plt.specgram(self.spec_mag, Fs=self.sample_rate,cmap=colorcmap)
