@@ -29,7 +29,120 @@ from spectrogram import Ui_OtherWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 
-class Pin:
+# signal class
+class Signal(PlotWidget):
+
+    def __init__(self, file_path, data, sample_rate):
+        self.waveform = PlotWidget()
+        self.file_path = file_path
+        self.data = data
+        self.sample_rate = sample_rate
+        self.fft = None
+        self.frequencies = None
+        self.magnitude_spectrum = None
+        self.phase_spectrum = None
+        self.modified_data = None
+        # initial plot range
+        self.x_range = [0, 2000]
+
+    # pg configurations
+    pg.setConfigOptions(background='w')
+    # anti aliasing to improve the appearance of a small image that's being scaled up
+    pg.setConfigOptions(antialias=True)
+
+    # for plotting after reading signal
+    def plot_signal(self, data):
+        x = np.arange(0, len(data), 1)
+        self.waveform.showGrid(x=True, y=True)
+        self.waveform.enableAutoRange(x=False, y=True)
+        p = self.waveform.plot(pen='b', width=0.1)
+        p.setData(x, data)
+        # self.waveform.setYRange(min(self.data)-1.5, max(self.data)+1.5, padding=0)
+        self.waveform.setXRange(self.x_range[0], self.x_range[1])
+
+        # to send signal when clicked
+        self.waveform.scene().sigMouseClicked.connect(lambda: ui.detect_click(self.file_path))
+        # self.win.closeEvent = self.closeEvent
+
+    # plotting modified signal
+    def plot_inverse(self, data):
+        self.waveform2 = self.win2.addPlot(row=1, col=1)
+        x = np.arange(0, len(data), 1)
+        self.waveform2.showGrid(x=True, y=True)
+        self.waveform2.enableAutoRange(x=False, y=True)
+        p = self.waveform2.plot(pen='b', width=0.1)
+        p.setData(x, data)
+        # self.waveform.setYRange(min(self.data)-1.5, max(self.data)+1.5, padding=0)
+        self.waveform2.setXRange(self.x_range[0], self.x_range[1], padding=0.005)
+
+        # to send signal when clicked
+        self.waveform2.scene().sigMouseClicked.connect(lambda: ui.detect_click(self.file_path))
+        self.win2.closeEvent = self.closeEvent
+
+    def generate_band(self):
+        b1 = []
+        b2 = []
+        b3 = []
+        b4 = []
+        b5 = []
+        b6 = []
+        b7 = []
+        b8 = []
+        b9 = []
+        b10 = []
+        freqs = np.sort(self.frequencies)
+        for freq in freqs:
+            if freqs[0] <= freq < (freqs[-1] / 10):
+                b1.append(freq)
+            if (freqs[-1] / 10) <= freq < (2 * (freqs[-1] / 10)):
+                b2.append(freq)
+            if (2 * (freqs[-1] / 10)) <= freq < (3 * (freqs[-1] / 10)):
+                b3.append(freq)
+            if (3 * (freqs[-1] / 10)) <= freq < (4 * (freqs[-1] / 10)):
+                b4.append(freq)
+            if (4 * (freqs[-1] / 10)) <= freq < (5 * (freqs[-1] / 10)):
+                b5.append(freq)
+            if (5 * (freqs[-1] / 10)) <= freq < (6 * (freqs[-1] / 10)):
+                b6.append(freq)
+            if (6 * (freqs[-1] / 10)) <= freq < (7 * (freqs[-1] / 10)):
+                b7.append(freq)
+            if (7 * (freqs[-1] / 10)) <= freq < (8 * (freqs[-1] / 10)):
+                b8.append(freq)
+            if (8 * (freqs[-1] / 10)) <= freq < (9 * (freqs[-1] / 10)):
+                b9.append(freq)
+            if (9 * (freqs[-1] / 10)) <= freq <= (freqs[-1]):
+                b10.append(freq)
+        # print(b10)
+
+    def slider(self, band, level):
+        new_band = [f * level for f in band]
+
+    def plot_fft_magnitude(self):
+        # plot magnitude spectrum
+        # x-Axis
+        frequency = self.frequencies
+        plt.plot(frequency, self.magnitude_spectrum)
+        plt.xlabel("frequency (HZ)")
+        plt.show()
+
+    def plot_fft_phase(self):
+        # plot magnitude spectrum
+        # x-Axis
+        frequency = self.frequencies
+        plt.plot(frequency, self.phase_spectrum)
+        plt.xlabel("frequency (HZ)")
+        plt.show()
+
+    def inverse_fft(self):
+        fft = np.multiply(self.magnitude_spectrum, np.exp(1j * self.phase_spectrum))
+        self.modified_data = np.fft.irfft(fft)
+        self.plot_inverse(self.modified_data)
+
+    def closeEvent(self, event):
+        ui.signal_closed(self.file_path)
+
+
+class Pin():
     def __init__(self):
         self.title = ''
         self.SignalPath = []
@@ -188,15 +301,18 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.eq_Slider_10.valueChanged.connect(self.slider_step)
 
 
-
         self.showMaximized()
         self.show()
+
 
     def spec_range(self):
         min_index = None
         max_index = None
         min_freq = self.specSlider1.value()
         max_freq = self.specSlider2.value()
+        self.spec_min_freq.setText(str(min_freq))
+        max_freq = self.specSlider2.value()
+        self.spec_max_freq.setText(str(max_freq))
 
         if min_freq < min(self.frequencies):
             min_index = 0
@@ -217,6 +333,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
 
     def open_window(self):
+        # color_cmap="plasma"
+        # self.spectro_draw(self.color_cmap)
         self.spectro_draw(self.pallette)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
@@ -333,7 +451,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         p = data_plot.plot(pen='b', width=0.1)
         p.setData(x, data)
         data_plot.getViewBox().setLimits(xMin=min(data))
-        data_plot.setXRange(x_range[0], x_range[1], padding=0.005)
+        data_plot.setXRange(x_range[0], x_range[1])
         #print(data_plot)
         return data_plot
 
@@ -378,9 +496,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 if self.pause == 1:
                     break
                 self.original_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i, padding=0.005)
+                                                 starting_x[1] + step * i)
                 self.modified_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i, padding=0.005)  #
+                                                 starting_x[1] + step * i)  #
 
                 QtWidgets.QApplication.processEvents()
                 # x_end= x_end + step
@@ -402,8 +520,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # get original xrange
         x_range = [min(self.original_data), min(self.original_data) + 2000]
         if mode == 1:  # start of the signal
-            self.original_waveform.setXRange(x_range[0], x_range[1], padding=0.005)
-            self.modified_waveform.setXRange(x_range[0], x_range[1], padding=0.005)  #
+            self.original_waveform.setXRange(x_range[0], x_range[1])
+            self.modified_waveform.setXRange(x_range[0], x_range[1])  #
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
             x_end = self.original_waveform.getAxis("bottom").range[1]
@@ -412,8 +530,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             if (x_start - 10) < 0:
                 self.signal_beginning(1)
             else:
-                self.original_waveform.setXRange(x_start - 10, x_end - 20, padding=0.005)
-                self.modified_waveform.setXRange(x_start - 10, x_end - 20, padding=0.005)  #
+                self.original_waveform.setXRange(x_start - 10, x_end - 20)
+                self.modified_waveform.setXRange(x_start - 10, x_end - 20)  #
 
     # to signal end
     def signal_end(self, mode):
@@ -421,8 +539,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # set xrange to be
         if mode == 1:
             x_end = len(self.original_data)
-            self.original_waveform.setXRange(x_end - 2000, x_end, padding=0.005)
-            self.modified_waveform.setXRange(x_end - 2000, x_end, padding=0.005)
+            self.original_waveform.setXRange(x_end - 2000, x_end)
+            self.modified_waveform.setXRange(x_end - 2000, x_end)
 
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
@@ -432,8 +550,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             if (x_end + 10) > len(self.original_data):
                 self.signal_end(1)
             else:
-                self.original_waveform.setXRange(x_start + 20, x_end + 10, padding=0.005)
-                self.modified_waveform.setXRange(x_start + 20, x_end + 10, padding=0.005)
+                self.original_waveform.setXRange(x_start + 20, x_end + 10)
+                self.modified_waveform.setXRange(x_start + 20, x_end + 10)
 
     # delete closed signal
     def signal_closed(self, file_path):
@@ -479,6 +597,10 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.elems.append(self.pins[pin].pinElemTable)
         self.pdf.build(self.elems)
         print("Report is done")
+
+
+
+
 
     def spectro_draw(self,colorcmap):
         self.pallette = colorcmap
