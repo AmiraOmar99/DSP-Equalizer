@@ -254,6 +254,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # plots
         self.original_waveform = None
         self.modified_waveform = None
+        self.pallette = 'plasma'
 
         # self.signal = None  # have the created signal object
         self.pins = {}  # have signal path and created pin object
@@ -284,6 +285,20 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_3.stateChanged.connect(self.color_pallette)
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
+        #self.specSlider1.valueChanged.connect(self.spec_range)
+        #self.specSlider2.valueChanged.connect(self.spec_range)
+
+        self.eq_Slider_1.valueChanged.connect(self.slider_step)
+        self.eq_Slider_2.valueChanged.connect(self.slider_step)
+        self.eq_Slider_3.valueChanged.connect(self.slider_step)
+        self.eq_Slider_4.valueChanged.connect(self.slider_step)
+        self.eq_Slider_5.valueChanged.connect(self.slider_step)
+        self.eq_Slider_6.valueChanged.connect(self.slider_step)
+        self.eq_Slider_7.valueChanged.connect(self.slider_step)
+        self.eq_Slider_8.valueChanged.connect(self.slider_step)
+        self.eq_Slider_9.valueChanged.connect(self.slider_step)
+        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+
 
         self.specSlider1.valueChanged.connect(self.spec_freq_ranges)
         self.specSlider2.valueChanged.connect(self.spec_freq_ranges)
@@ -291,20 +306,23 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.showMaximized()
         self.show()
 
+    #def spec_range(self):
+
+
     def open_window(self):
         self.color_cmap="plasma"
         # self.spectro_draw(self.color_cmap)
         self.spec_freq_ranges()
+        # self.spectro_draw(self.pallette)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
-
         #self.window.show()
 
     # open for signals .wav , .edf
 
     def open_sig(self):
-        print("open_sig")
+        #print("open_sig")
         self.path = PyQt5.QtWidgets.QFileDialog.getOpenFileName(None, 'Open', None, "WAV (*.wav)")[0]
         if self.path:
             if len(self.signals_windows) == 0:
@@ -314,8 +332,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 self.signals_windows[self.path].config(self.path)
 
             # load .wav data
-            self.original_data, self.sample_rate = sf.read(self.path)
-            self.modified_data = self.original_data
+            self.signals_windows[self.path].original_data, self.signals_windows[self.path].sample_rate = sf.read(self.path)
+            self.signals_windows[self.path].modified_data = self.signals_windows[self.path].original_data
             # create signal object and plot
             self.signals_windows[self.path].create_signal()
 
@@ -329,6 +347,55 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             #     data = np.array(df.iloc[:, 1])
             #     # create signa object and plot
             #     self.create_signal(path, data)
+    def generate_band(self):
+        self.b1=[]
+        self.b2=[]
+        self.b3=[]
+        self.b4=[]
+        self.b5=[]
+        self.b6=[]
+        self.b7=[]
+        self.b8=[]
+        self.b9=[]
+        self.b10=[]
+        freqs=np.sort(self.frequencies)
+        for freq in self.frequencies:
+            if freqs[0] <= freq < (freqs[-1]/10):
+                self.b1.append(freq)
+            if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
+                self.b2.append(freq)
+            if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
+                self.b3.append(freq)
+            if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
+                self.b4.append(freq)
+            if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
+                self.b5.append(freq)
+            if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
+                self.b6.append(freq)
+            if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
+                self.b7.append(freq)
+            if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
+                self.b8.append(freq)
+            if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
+                self.b9.append(freq)
+            if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
+                self.b10.append(freq)
+        # print(b10)
+    
+    def get_amplitude(self):
+        b = len(self.b1)
+        As=[]
+        self.A1=list(self.magnitude_spectrum[:b])
+        self.A2=list(self.magnitude_spectrum[b:2*b])
+        self.A3=list(self.magnitude_spectrum[2*b:3*b])
+        self.A4=list(self.magnitude_spectrum[3*b:4*b])
+        self.A5=list(self.magnitude_spectrum[4*b:5*b])
+        self.A6=list(self.magnitude_spectrum[5*b:6*b])
+        self.A7=list(self.magnitude_spectrum[6*b:7*b])
+        self.A8=list(self.magnitude_spectrum[7*b:8*b])
+        self.A9=list(self.magnitude_spectrum[8*b:9*b])
+        self.A10=list(self.magnitude_spectrum[9*b:(10*b+1)])
+        As = self.A1+self.A2+self.A3+self.A4+self.A5+self.A6+self.A7+self.A7+self.A8+self.A9+self.A10
 
     # create Signal object and plot signal
     def create_signal(self):
@@ -339,11 +406,15 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
-
         # create fft for signal
         self.signal_fft()
         # print(self.fft)
-        self.play_signal(3)  # to be changed to step
+        #equalizer
+        self.generate_band()
+        self.get_amplitude()
+        #self.play_signal(3)  # to be changed to step
+
+
 
     # for plotting after reading signal
     def plot(self, data):
@@ -356,6 +427,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         p.setData(x, data)
         data_plot.getViewBox().setLimits(xMin=min(data))
         data_plot.setXRange(x_range[0], x_range[1])
+        #print(data_plot)
         return data_plot
 
     # fft for signal
@@ -364,17 +436,16 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = np.abs(self.fft)  # for calculating magnitude spectrum
         self.phase_spectrum = np.angle(self.fft)
         self.frequencies = np.fft.rfftfreq(len(self.original_data), d=1 / self.sample_rate)
+        # print(len(self.frequencies))
+        # print(len(self.magnitude_spectrum))
 
-    def inverse_fft(self):
-        fft = np.multiply(self.magnitude_spectrum, np.exp(1j * self.phase_spectrum))
-        self.modified_data = np.fft.irfft(fft)
-        self.create_signal()
 
     # Zoom
     def zoom(self, mode):
         center_x = (self.original_waveform.getAxis("bottom").range[0] +
                     self.original_waveform.getAxis("bottom").range[1]) / 2
         center_y = 0
+        print("zooooom")
         # zoom in
         if mode == 1:
             self.original_waveform.getViewBox().scaleBy(y=0.9, x=0.9, center=(center_x, center_y))
@@ -512,6 +583,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
 
     def spectro_draw(self,colorcmap):
+        # self.pallette=colorcmap
         # clearing old figure
         self.figure.clear()
         plt.specgram(self.original_data, Fs=self.sample_rate,cmap=colorcmap)
@@ -519,8 +591,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
+
     def color_pallette(self):
-        colors=['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
+        colors = ['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
         if self.checkBox_1.isChecked():
             self.color_cmap = colors[1]
             self.spectro_draw(self.color_cmap)
@@ -540,16 +613,49 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.color_cmap = colors[0]
             self.spectro_draw(self.color_cmap)
 
+    def slider_step(self):
+        current_val_1 = self.eq_Slider_1.value()
+        current_val_2= self.eq_Slider_2.value()
+        current_val_3 = self.eq_Slider_3.value()
+        current_val_4 = self.eq_Slider_4.value()
+        current_val_5 = self.eq_Slider_5.value()
+        current_val_6 = self.eq_Slider_6.value()
+        current_val_7= self.eq_Slider_7.value()
+        current_val_8 = self.eq_Slider_8.value()
+        current_val_9= self.eq_Slider_9.value()
+        current_val_10= self.eq_Slider_10.value()
+
+        new_band_1 = [a * current_val_1 for a in self.A1]
+        new_band_2 = [a * current_val_2 for a in self.A2]
+        #new_band_2 = [a * current_val_2 for a in self.signals[self.selected_signal].A2]
+        new_band_3 = [a * current_val_3 for a in self.A3]
+        new_band_4 = [a * current_val_4 for a in self.A4]
+        new_band_5 = [a * current_val_5 for a in self.A5]
+        new_band_6 = [a * current_val_6 for a in self.A6]
+        new_band_7 = [a * current_val_7 for a in self.A7]
+        new_band_8 = [a * current_val_8 for a in self.A8]
+        new_band_9 = [a * current_val_9 for a in self.A9]
+        new_band_10 = [a * current_val_10 for a in self.A10]
+        
+        self.new_amp = new_band_1 + new_band_2 + new_band_3 + new_band_4 + new_band_5+new_band_6+new_band_7+new_band_8 + new_band_9 + new_band_10
+        self.inverse_fft()
+        #print(new_band_1)
+        #print(len(new_band_1))
+        #print(self.new_amp[20]/self.magnitude_spectrum[20])
+        # print(len(new_amp))
+
+    def inverse_fft(self):
+        fft = np.multiply(self.new_amp, np.exp(1j * self.phase_spectrum))
+        self.modified_data = np.fft.irfft(fft)
+        #clear widget
+        self.verticalLayout_6.removeWidget(self.original_waveform)
+        self.verticalLayout_7.removeWidget(self.modified_waveform)
+        #update 
+        self.create_signal()
+        #print(self.modified_waveform)
+        self.open_window()
 
 
-
-
-
-    # # emit path of the last clicked on signal
-    # def detect_click(self, file_path):
-    #     self.selected_signal = file_path
-    #     # self.signal.emit(file_path)
-    #     # print(file_path)
 
 
 class OtherWindows(Window):
