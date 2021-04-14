@@ -141,6 +141,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # plots
         self.original_waveform = None
         self.modified_waveform = None
+        self.pallette = 'plasma'
 
         # self.signal = None  # have the created signal object
         self.pins = {}  # have signal path and created pin object
@@ -194,8 +195,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
 
     def open_window(self):
-        color_cmap="plasma"
-        self.spectro_draw(color_cmap)
+        self.spectro_draw(self.pallette)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
@@ -456,6 +456,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         print("Report is done")
 
     def spectro_draw(self,colorcmap):
+        self.pallette=colorcmap
         # clearing old figure
         self.figure.clear()
         plt.specgram(self.modified_data, Fs=self.sample_rate,cmap=colorcmap)
