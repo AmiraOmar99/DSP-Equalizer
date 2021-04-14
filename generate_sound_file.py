@@ -12,7 +12,7 @@ sample_rate = 44100.0
 
 
 
-def create_signal(f1 = 500, f2 = 600, f3 = 880, f4 = 700 , f5 = 1050, duration_seconds = 2):
+def create_signal(f1 = 500, f2 = 5000, f3 = 10000, f4 = 50000 , f5 = 100000, duration_seconds = 2):
     global audio
     num_samples = duration_seconds * sample_rate
 
@@ -50,6 +50,8 @@ def save_wav(file_name):
     return
 
 
-create_signal()
+
+if __name__ == "__main__":
+    create_signal()
     
-save_wav("soundfile.wav")
+    save_wav("soundddfile.wav")

@@ -220,7 +220,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             max_index = int(np.where(self.frequencies == max_freq)[0])
 
         modified_fft = np.abs(np.fft.rfft(self.modified_data))
-        for x in range(min_index,max_index+1):
+        for x in range(min_index):
+            modified_fft[x]=0
+        for x in range(max_index,len(self.frequencies)):
             modified_fft[x]=0
 
         modified_fft = np.multiply(modified_fft,np.exp(1j * self.phase_spectrum))
@@ -494,10 +496,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.pdf.build(self.elems)
         print("Report is done")
 
-
-
-
-
     def spectro_draw(self,colorcmap):
         self.pallette = colorcmap
         # clearing old figure
@@ -574,7 +572,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.create_signal()
         #print(self.modified_waveform)
         self.spec_range()
-        self.open_window()
 
 
 
