@@ -23,10 +23,10 @@
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
-         <x>-458</x>
+         <x>-428</x>
          <y>0</y>
-         <width>1294</width>
-         <height>490</height>
+         <width>1303</width>
+         <height>472</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -63,9 +63,9 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-220</y>
-                   <width>711</width>
-                   <height>880</height>
+                   <y>0</y>
+                   <width>703</width>
+                   <height>886</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -548,9 +548,9 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>0</y>
-                   <width>478</width>
-                   <height>430</height>
+                   <y>-28</y>
+                   <width>453</width>
+                   <height>428</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -635,7 +635,7 @@
                       <item alignment="Qt::AlignHCenter">
                        <widget class="QLabel" name="specLabel1">
                         <property name="text">
-                         <string>TextLabel</string>
+                         <string>Min Freq</string>
                         </property>
                        </widget>
                       </item>
@@ -653,7 +653,7 @@
                       <item alignment="Qt::AlignHCenter">
                        <widget class="QLabel" name="specLabel2">
                         <property name="text">
-                         <string>TextLabel</string>
+                         <string>Max Freq</string>
                         </property>
                        </widget>
                       </item>
@@ -683,7 +683,7 @@
      <x>0</x>
      <y>0</y>
      <width>856</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

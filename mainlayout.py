@@ -666,8 +666,8 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "Greens"))
         self.checkBox_4.setText(_translate("MainWindow", "Oranges"))
         self.checkBox_5.setText(_translate("MainWindow", "Cool"))
-        #self.specSlider1.setText(_translate("MainWindow", "TextLabel"))
-        #self.specSlider2.setText(_translate("MainWindow", "TextLabel"))
+        self.specLabel1.setText(QtCore.QCoreApplication.translate("MainWindow", u"Min Freq", None))
+        self.specLabel2.setText(QtCore.QCoreApplication.translate("MainWindow", u"Max Freq", None))
 
         self.menuFile.setStatusTip(_translate("MainWindow", "Creates a new document"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))

@@ -137,6 +137,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = None
         self.phase_spectrum = None
         self.modified_data = None
+        self.spec_mag = self.modified_data
 
         # plots
         self.original_waveform = None
@@ -172,8 +173,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_3.stateChanged.connect(self.color_pallette)
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
-        #self.specSlider1.valueChanged.connect(self.spec_range)
-        #self.specSlider2.valueChanged.connect(self.spec_range)
+        self.specSlider1.valueChanged.connect(self.spec_range)
+        self.specSlider2.valueChanged.connect(self.spec_range)
 
         self.eq_Slider_1.valueChanged.connect(self.slider_step)
         self.eq_Slider_2.valueChanged.connect(self.slider_step)
@@ -191,7 +192,27 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.showMaximized()
         self.show()
 
-    #def spec_range(self):
+    def spec_range(self):
+        min_index = None
+        max_index = None
+        min_freq = self.specSlider1.value()
+        max_freq = self.specSlider1.value()
+
+        if min_freq < min(self.frequencies):
+            min_index = 0
+
+        if max_freq > max(self.frequencies):
+            max_index = len(self.frequencies)
+
+        if min_index != 0:
+            min_index = int(np.where(self.frequencies == min_freq)[0])
+
+        if max_index is None:
+            max_index = int(np.where(self.frequencies == max_freq)[0])
+
+        modified_fft = np.fft.rfft(self.modified_data)
+        modified_fft = modified_fft[max_index:max_index+1]
+        self.spec_mag = np.fft.irfft(modified_fft)
 
 
     def open_window(self):
@@ -281,6 +302,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # create Signal object and plot signal
     def create_signal(self):
+        # create fft for signal
+        self.signal_fft()
         self.original_waveform = self.plot(self.original_data)
         self.modified_waveform = self.plot(self.modified_data)
         self.verticalLayout_6.addWidget(self.original_waveform)
@@ -288,8 +311,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
-        # create fft for signal
-        self.signal_fft()
+
         # print(self.fft)
         #equalizer
         self.generate_band()
@@ -456,10 +478,11 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         print("Report is done")
 
     def spectro_draw(self,colorcmap):
-        self.pallette=colorcmap
+        self.pallette = colorcmap
+        self.spec_range()
         # clearing old figure
         self.figure.clear()
-        plt.specgram(self.modified_data, Fs=self.sample_rate,cmap=colorcmap)
+        plt.specgram(self.spec_mag, Fs=self.sample_rate,cmap=colorcmap)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
