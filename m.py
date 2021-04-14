@@ -137,7 +137,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = None
         self.phase_spectrum = None
         self.modified_data = None
-        self.spec_mag = self.modified_data
+        self.spec_mag = None
 
         # plots
         self.original_waveform = None
