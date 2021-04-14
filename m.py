@@ -250,6 +250,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.magnitude_spectrum = None
         self.phase_spectrum = None
         self.modified_data = None
+        self.spec_mag = self.modified_data
 
         # plots
         self.original_waveform = None
@@ -285,8 +286,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_3.stateChanged.connect(self.color_pallette)
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
-        #self.specSlider1.valueChanged.connect(self.spec_range)
-        #self.specSlider2.valueChanged.connect(self.spec_range)
+        self.specSlider1.valueChanged.connect(self.spec_range)
+        self.specSlider2.valueChanged.connect(self.spec_range)
 
         self.eq_Slider_1.valueChanged.connect(self.slider_step)
         self.eq_Slider_2.valueChanged.connect(self.slider_step)
@@ -300,20 +301,39 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.eq_Slider_10.valueChanged.connect(self.slider_step)
 
 
-        self.specSlider1.valueChanged.connect(self.spec_freq_ranges)
-        self.specSlider2.valueChanged.connect(self.spec_freq_ranges)
-
         self.showMaximized()
         self.show()
 
-    #def spec_range(self):
+
+    def spec_range(self):
+        min_index = None
+        max_index = None
+        min_freq = self.specSlider1.value()
+        self.spec_min_freq.setText(str(min_freq))
+        max_freq = self.specSlider2.value()
+        self.spec_max_freq.setText(str(max_freq))
+
+        if min_freq < min(self.frequencies):
+            min_index = 0
+
+        if max_freq > max(self.frequencies):
+            max_index = len(self.frequencies)
+
+        if min_index != 0:
+            min_index = int(np.where(self.frequencies == min_freq)[0])
+
+        if max_index is None:
+            max_index = int(np.where(self.frequencies == max_freq)[0])
+
+        modified_fft = np.fft.rfft(self.modified_data)
+        modified_fft = modified_fft[min_index:max_index+1]
+        self.spec_mag = np.fft.irfft(modified_fft)
 
 
     def open_window(self):
-        self.color_cmap="plasma"
+        # color_cmap="plasma"
         # self.spectro_draw(self.color_cmap)
-        self.spec_freq_ranges()
-        # self.spectro_draw(self.pallette)
+        self.spectro_draw(self.pallette)
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
@@ -399,6 +419,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # create Signal object and plot signal
     def create_signal(self):
+        # create fft for signal
+        self.signal_fft()
         self.original_waveform = self.plot(self.original_data)
         self.modified_waveform = self.plot(self.modified_data)
         self.verticalLayout_6.addWidget(self.original_waveform)
@@ -406,8 +428,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
-        # create fft for signal
-        self.signal_fft()
+
         # print(self.fft)
         #equalizer
         self.generate_band()
@@ -574,20 +595,15 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         print("Report is done")
 
 
-    def spec_freq_ranges(self):
-        self.new_min = self.specSlider1.value()
-        self.spec_min_freq.setText(str(self.new_min))
-        self.new_max = self.specSlider2.value()
-        self.spec_max_freq.setText(str(self.new_max))
-        self.spectro_draw(self.color_cmap)
+
 
 
     def spectro_draw(self,colorcmap):
-        # self.pallette=colorcmap
+        self.pallette = colorcmap
+        self.spec_range()
         # clearing old figure
         self.figure.clear()
-        plt.specgram(self.original_data, Fs=self.sample_rate,cmap=colorcmap)
-        plt.axis(ymin=self.new_min, ymax= self.new_max)
+        plt.specgram(self.spec_mag, Fs=self.sample_rate,cmap=colorcmap)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
@@ -595,23 +611,17 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
     def color_pallette(self):
         colors = ['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
         if self.checkBox_1.isChecked():
-            self.color_cmap = colors[1]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[1])
         elif self.checkBox_2.isChecked():
-            self.color_cmap = colors[2]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[2])
         elif self.checkBox_3.isChecked():
-            self.color_cmap = colors[3]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[3])
         elif self.checkBox_4.isChecked():
-            self.color_cmap = colors[4]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[4])
         elif self.checkBox_5.isChecked():
-            self.color_cmap = colors[5]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[5])
         else:
-            self.color_cmap = colors[0]
-            self.spectro_draw(self.color_cmap)
+            self.spectro_draw(colors[0])
 
     def slider_step(self):
         current_val_1 = self.eq_Slider_1.value()
