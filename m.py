@@ -530,6 +530,17 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         current_val_8 = self.eq_Slider_8.value()
         current_val_9= self.eq_Slider_9.value()
         current_val_10= self.eq_Slider_10.value()
+        
+        self.gain1.setText(str(current_val_1))
+        self.gain2.setText(str(current_val_2))
+        self.gain3.setText(str(current_val_3))
+        self.gain4.setText(str(current_val_4))
+        self.gain5.setText(str(current_val_5))
+        self.gain6.setText(str(current_val_6))
+        self.gain7.setText(str(current_val_7))
+        self.gain8.setText(str(current_val_8))
+        self.gain9.setText(str(current_val_9))
+        self.gain10.setText(str(current_val_10))
 
         new_band_1 = [a * current_val_1 for a in self.A1]
         new_band_2 = [a * current_val_2 for a in self.A2]
