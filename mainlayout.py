@@ -726,7 +726,7 @@ class Ui_MainWindow(object):
         self.actionRecent_signals.setText(_translate("MainWindow", "Recent signals"))
         self.actionRecent_workspaces.setText(_translate("MainWindow", "Recent workspaces"))
         self.actionReplace_signal_with.setText(_translate("MainWindow", "Replace signal with..."))
-        self.actionSave_signal_as.setText(_translate("MainWindow", "Save signal as..."))
+        self.actionSave_signal_as.setText(_translate("MainWindow", "Save modified signal ..."))
         self.actionSave_visible_signal_part_as.setText(_translate("MainWindow", "Save visible signal part as..."))
         self.Export_pdf.setText(_translate("MainWindow", "Export report as pdf"))
         self.Export_pdf.setStatusTip(_translate("MainWindow", "Export report for the selected signals as pdf"))

@@ -27,6 +27,7 @@ from reportlab.platypus import TableStyle
 import mainlayout
 from spectrogram import Ui_OtherWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from scipy.io.wavfile import write
 
 
 class Pin():
@@ -153,6 +154,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         # Actions
         self.actionOpen_signal.triggered.connect(self.open_sig)
+        self.actionSave_signal_as.triggered.connect(self.save_sig)
         self.actionImport_signal_from_CSV_decimal_comma.triggered.connect(self.open_csv)
         # self.actionImport_signal_from_CSV_decimal_dot.triggered.connect(self.open_scv)
         self.actionZoom_In.triggered.connect(lambda: self.zoom(1))
@@ -589,7 +591,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         #print(self.modified_waveform)
         self.spec_range()
 
-
+    def save_sig(self):
+        write("newData.WAV", self.sample_rate, self.modified_data)
 
 
 class OtherWindows(Window):
