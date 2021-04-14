@@ -63,7 +63,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-220</y>
+                   <y>-450</y>
                    <width>711</width>
                    <height>880</height>
                   </rect>
@@ -170,12 +170,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range1">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>1st Band</string>
                            </property>
                           </widget>
                          </item>
@@ -201,12 +207,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range2">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>2nd Band</string>
                            </property>
                           </widget>
                          </item>
@@ -232,12 +244,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range3">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>3rd Band</string>
                            </property>
                           </widget>
                          </item>
@@ -263,12 +281,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range4">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>4th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -294,12 +318,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range5">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>5th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -325,12 +355,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range6">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>6th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -356,12 +392,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range7">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>7th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -387,12 +429,15 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range8">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>8th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -418,12 +463,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range9">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>9th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -449,12 +500,18 @@
                            <property name="orientation">
                             <enum>Qt::Vertical</enum>
                            </property>
+                           <property name="tickPosition">
+                            <enum>QSlider::TicksBothSides</enum>
+                           </property>
+                           <property name="tickInterval">
+                            <number>1</number>
+                           </property>
                           </widget>
                          </item>
                          <item alignment="Qt::AlignHCenter">
                           <widget class="QLabel" name="freq_range10">
                            <property name="text">
-                            <string>TextLabel</string>
+                            <string>10th Band</string>
                            </property>
                           </widget>
                          </item>
@@ -626,16 +683,41 @@
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_24">
                       <item alignment="Qt::AlignHCenter">
+                       <widget class="QLabel" name="spec_min_freq">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item alignment="Qt::AlignHCenter">
                        <widget class="QSlider" name="specSlider1">
+                        <property name="maximum">
+                         <number>10000</number>
+                        </property>
+                        <property name="singleStep">
+                         <number>1000</number>
+                        </property>
+                        <property name="pageStep">
+                         <number>1000</number>
+                        </property>
+                        <property name="value">
+                         <number>0</number>
+                        </property>
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="tickPosition">
+                         <enum>QSlider::TicksBothSides</enum>
+                        </property>
+                        <property name="tickInterval">
+                         <number>0</number>
                         </property>
                        </widget>
                       </item>
                       <item alignment="Qt::AlignHCenter">
                        <widget class="QLabel" name="specLabel1">
                         <property name="text">
-                         <string>TextLabel</string>
+                         <string>Minimum Frequency</string>
                         </property>
                        </widget>
                       </item>
@@ -644,16 +726,50 @@
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_25">
                       <item alignment="Qt::AlignHCenter">
+                       <widget class="QLabel" name="spec_max_freq">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item alignment="Qt::AlignHCenter">
                        <widget class="QSlider" name="specSlider2">
+                        <property name="minimum">
+                         <number>20000</number>
+                        </property>
+                        <property name="maximum">
+                         <number>30000</number>
+                        </property>
+                        <property name="singleStep">
+                         <number>1000</number>
+                        </property>
+                        <property name="pageStep">
+                         <number>1000</number>
+                        </property>
+                        <property name="value">
+                         <number>20000</number>
+                        </property>
+                        <property name="tracking">
+                         <bool>true</bool>
+                        </property>
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
+                        </property>
+                        <property name="invertedAppearance">
+                         <bool>false</bool>
+                        </property>
+                        <property name="invertedControls">
+                         <bool>false</bool>
+                        </property>
+                        <property name="tickPosition">
+                         <enum>QSlider::TicksBothSides</enum>
                         </property>
                        </widget>
                       </item>
                       <item alignment="Qt::AlignHCenter">
                        <widget class="QLabel" name="specLabel2">
                         <property name="text">
-                         <string>TextLabel</string>
+                         <string>Maximum Frequency</string>
                         </property>
                        </widget>
                       </item>

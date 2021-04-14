@@ -58,7 +58,7 @@ class Signal(PlotWidget):
         p = self.waveform.plot(pen='b', width=0.1)
         p.setData(x, data)
         # self.waveform.setYRange(min(self.data)-1.5, max(self.data)+1.5, padding=0)
-        self.waveform.setXRange(self.x_range[0], self.x_range[1], padding=0.005)
+        self.waveform.setXRange(self.x_range[0], self.x_range[1])
 
         # to send signal when clicked
         self.waveform.scene().sigMouseClicked.connect(lambda: ui.detect_click(self.file_path))
@@ -285,13 +285,16 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.checkBox_4.stateChanged.connect(self.color_pallette)
         self.checkBox_5.stateChanged.connect(self.color_pallette)
 
+        self.specSlider1.valueChanged.connect(self.spec_freq_ranges)
+        self.specSlider2.valueChanged.connect(self.spec_freq_ranges)
 
         self.showMaximized()
         self.show()
 
     def open_window(self):
-        color_cmap="plasma"
-        self.spectro_draw(color_cmap)
+        self.color_cmap="plasma"
+        # self.spectro_draw(self.color_cmap)
+        self.spec_freq_ranges()
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_OtherWindow()
         self.ui.setupUi(self.window)
@@ -352,7 +355,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         p = data_plot.plot(pen='b', width=0.1)
         p.setData(x, data)
         data_plot.getViewBox().setLimits(xMin=min(data))
-        data_plot.setXRange(x_range[0], x_range[1], padding=0.005)
+        data_plot.setXRange(x_range[0], x_range[1])
         return data_plot
 
     # fft for signal
@@ -397,9 +400,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 if self.pause == 1:
                     break
                 self.original_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i, padding=0.005)
+                                                 starting_x[1] + step * i)
                 self.modified_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i, padding=0.005)  #
+                                                 starting_x[1] + step * i)  #
 
                 QtWidgets.QApplication.processEvents()
                 # x_end= x_end + step
@@ -421,8 +424,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # get original xrange
         x_range = [min(self.original_data), min(self.original_data) + 2000]
         if mode == 1:  # start of the signal
-            self.original_waveform.setXRange(x_range[0], x_range[1], padding=0.005)
-            self.modified_waveform.setXRange(x_range[0], x_range[1], padding=0.005)  #
+            self.original_waveform.setXRange(x_range[0], x_range[1])
+            self.modified_waveform.setXRange(x_range[0], x_range[1])  #
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
             x_end = self.original_waveform.getAxis("bottom").range[1]
@@ -431,8 +434,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             if (x_start - 10) < 0:
                 self.signal_beginning(1)
             else:
-                self.original_waveform.setXRange(x_start - 10, x_end - 20, padding=0.005)
-                self.modified_waveform.setXRange(x_start - 10, x_end - 20, padding=0.005)  #
+                self.original_waveform.setXRange(x_start - 10, x_end - 20)
+                self.modified_waveform.setXRange(x_start - 10, x_end - 20)  #
 
     # to signal end
     def signal_end(self, mode):
@@ -440,8 +443,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # set xrange to be
         if mode == 1:
             x_end = len(self.original_data)
-            self.original_waveform.setXRange(x_end - 2000, x_end, padding=0.005)
-            self.modified_waveform.setXRange(x_end - 2000, x_end, padding=0.005)
+            self.original_waveform.setXRange(x_end - 2000, x_end)
+            self.modified_waveform.setXRange(x_end - 2000, x_end)
 
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
@@ -451,8 +454,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             if (x_end + 10) > len(self.original_data):
                 self.signal_end(1)
             else:
-                self.original_waveform.setXRange(x_start + 20, x_end + 10, padding=0.005)
-                self.modified_waveform.setXRange(x_start + 20, x_end + 10, padding=0.005)
+                self.original_waveform.setXRange(x_start + 20, x_end + 10)
+                self.modified_waveform.setXRange(x_start + 20, x_end + 10)
 
     # delete closed signal
     def signal_closed(self, file_path):
@@ -499,27 +502,43 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.pdf.build(self.elems)
         print("Report is done")
 
+
+    def spec_freq_ranges(self):
+        self.new_min = self.specSlider1.value()
+        self.spec_min_freq.setText(str(self.new_min))
+        self.new_max = self.specSlider2.value()
+        self.spec_max_freq.setText(str(self.new_max))
+        self.spectro_draw(self.color_cmap)
+
+
     def spectro_draw(self,colorcmap):
         # clearing old figure
         self.figure.clear()
         plt.specgram(self.original_data, Fs=self.sample_rate,cmap=colorcmap)
+        plt.axis(ymin=self.new_min, ymax= self.new_max)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
     def color_pallette(self):
         colors=['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
         if self.checkBox_1.isChecked():
-            self.spectro_draw(colors[1])
+            self.color_cmap = colors[1]
+            self.spectro_draw(self.color_cmap)
         elif self.checkBox_2.isChecked():
-            self.spectro_draw(colors[2])
+            self.color_cmap = colors[2]
+            self.spectro_draw(self.color_cmap)
         elif self.checkBox_3.isChecked():
-            self.spectro_draw(colors[3])
+            self.color_cmap = colors[3]
+            self.spectro_draw(self.color_cmap)
         elif self.checkBox_4.isChecked():
-            self.spectro_draw(colors[4])
+            self.color_cmap = colors[4]
+            self.spectro_draw(self.color_cmap)
         elif self.checkBox_5.isChecked():
-            self.spectro_draw(colors[5])
+            self.color_cmap = colors[5]
+            self.spectro_draw(self.color_cmap)
         else:
-            self.spectro_draw(colors[0])
+            self.color_cmap = colors[0]
+            self.spectro_draw(self.color_cmap)
 
 
 
