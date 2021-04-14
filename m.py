@@ -166,13 +166,14 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.actionSignal_End.triggered.connect(lambda: self.signal_end(1))
         self.actionPlay_as_fast_as_possible.triggered.connect(self.play_fast)
         self.Export_pdf.triggered.connect(self.E_pdf)
-        self.actionSpectrogram.triggered.connect(self.open_window)
+        self.actionSpectrogram.triggered.connect(self.spec_showhide)
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
-        self.checkBox_1.stateChanged.connect(self.color_pallette)
-        self.checkBox_2.stateChanged.connect(self.color_pallette)
-        self.checkBox_3.stateChanged.connect(self.color_pallette)
-        self.checkBox_4.stateChanged.connect(self.color_pallette)
-        self.checkBox_5.stateChanged.connect(self.color_pallette)
+        self.radioButton1.toggled.connect(self.color_pallette)
+        self.radioButton2.toggled.connect(self.color_pallette)
+        self.radioButton3.toggled.connect(self.color_pallette)
+        self.radioButton4.toggled.connect(self.color_pallette)
+        self.radioButton5.toggled.connect(self.color_pallette)
+
         self.specSlider1.valueChanged.connect(self.spec_range)
         self.specSlider2.valueChanged.connect(self.spec_range)
 
@@ -191,6 +192,11 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.showMaximized()
         self.show()
 
+    def spec_showhide(self):
+        if self.frame_3.isVisible():
+            self.frame_3.setVisible(False)
+        else:
+            self.frame_3.setVisible(True)
 
     def spec_range(self):
         min_index = None
@@ -503,15 +509,15 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     def color_pallette(self):
         colors = ['plasma','Purples', 'Blues', 'Greens', 'Oranges','cool']
-        if self.checkBox_1.isChecked():
+        if self.radioButton1.isChecked():
             self.spectro_draw(colors[1])
-        elif self.checkBox_2.isChecked():
+        elif self.radioButton2.isChecked():
             self.spectro_draw(colors[2])
-        elif self.checkBox_3.isChecked():
+        elif self.radioButton3.isChecked():
             self.spectro_draw(colors[3])
-        elif self.checkBox_4.isChecked():
+        elif self.radioButton4.isChecked():
             self.spectro_draw(colors[4])
-        elif self.checkBox_5.isChecked():
+        elif self.radioButton5.isChecked():
             self.spectro_draw(colors[5])
         else:
             self.spectro_draw(colors[0])
