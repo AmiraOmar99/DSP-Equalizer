@@ -327,6 +327,22 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.modified_waveform = self.plot(self.modified_data)
         self.verticalLayout_6.addWidget(self.original_waveform)
         self.verticalLayout_7.addWidget(self.modified_waveform)
+
+        #spectrogram sliders config
+        #maximum Freq
+        length=len(self.frequencies)
+        self.specSlider2.setMinimum(self.frequencies[int(length/2)])
+        self.specSlider2.setMaximum(self.frequencies[length-1])
+        self.specSlider2.setSingleStep(100)
+        self.specSlider2.setPageStep(100)
+        print(self.frequencies[length-1])
+        self.specSlider2.setValue(self.frequencies[length-1])
+
+        #minimum Freq
+        self.specSlider1.setMaximum(self.frequencies[int(length/2)])
+        self.specSlider1.setSingleStep(100)
+        self.specSlider1.setPageStep(100)
+
         self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
