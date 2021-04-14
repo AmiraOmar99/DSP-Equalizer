@@ -23,10 +23,10 @@
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
-         <x>-428</x>
+         <x>-458</x>
          <y>0</y>
-         <width>1303</width>
-         <height>472</height>
+         <width>1294</width>
+         <height>490</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -64,8 +64,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>703</width>
-                   <height>886</height>
+                   <width>711</width>
+                   <height>880</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -605,9 +605,9 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>-28</y>
-                   <width>453</width>
-                   <height>428</height>
+                   <y>0</y>
+                   <width>478</width>
+                   <height>430</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_22">
@@ -644,37 +644,37 @@
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_21">
                       <item>
-                       <widget class="QCheckBox" name="checkBox_1">
+                       <widget class="QRadioButton" name="radioButton1">
                         <property name="text">
-                         <string>CheckBox</string>
+                         <string>Purples</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QCheckBox" name="checkBox_2">
+                       <widget class="QRadioButton" name="radioButton2">
                         <property name="text">
-                         <string>CheckBox</string>
+                         <string>Blues</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QCheckBox" name="checkBox_3">
+                       <widget class="QRadioButton" name="radioButton3">
                         <property name="text">
-                         <string>CheckBox</string>
+                         <string>Greens</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QCheckBox" name="checkBox_4">
+                       <widget class="QRadioButton" name="radioButton4">
                         <property name="text">
-                         <string>CheckBox</string>
+                         <string>Oranges</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QCheckBox" name="checkBox_5">
+                       <widget class="QRadioButton" name="radioButton5">
                         <property name="text">
-                         <string>CheckBox</string>
+                         <string>Cool</string>
                         </property>
                        </widget>
                       </item>
@@ -799,7 +799,7 @@
      <x>0</x>
      <y>0</y>
      <width>856</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

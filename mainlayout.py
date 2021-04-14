@@ -349,31 +349,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_21 = QtWidgets.QVBoxLayout()
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
-        self.checkBox_1 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_1.setObjectName(u"checkBox_1")
 
-        self.verticalLayout_21.addWidget(self.checkBox_1)
-
-        self.checkBox_2 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_2.setObjectName(u"checkBox_2")
-
-        self.verticalLayout_21.addWidget(self.checkBox_2)
-
-        self.checkBox_3 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_3.setObjectName(u"checkBox_3")
-
-        self.verticalLayout_21.addWidget(self.checkBox_3)
-
-        self.checkBox_4 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_4.setObjectName(u"checkBox_4")
-
-        self.verticalLayout_21.addWidget(self.checkBox_4)
-
-        self.checkBox_5 = QtWidgets.QCheckBox(self.scrollAreaWidgetContents_6)
-        self.checkBox_5.setObjectName(u"checkBox_5")
-
-        self.verticalLayout_21.addWidget(self.checkBox_5)
-
+        self.radioButton1 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_6)
+        self.radioButton1.setObjectName("radioButton1")
+        self.verticalLayout_21.addWidget(self.radioButton1)
+        self.radioButton2 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_6)
+        self.radioButton2.setObjectName("radioButton2")
+        self.verticalLayout_21.addWidget(self.radioButton2)
+        self.radioButton3 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_6)
+        self.radioButton3.setObjectName("radioButton3")
+        self.verticalLayout_21.addWidget(self.radioButton3)
+        self.radioButton4 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_6)
+        self.radioButton4.setObjectName("radioButton4")
+        self.verticalLayout_21.addWidget(self.radioButton4)
+        self.radioButton5 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_6)
+        self.radioButton5.setObjectName("radioButton5")
+        self.verticalLayout_21.addWidget(self.radioButton5)
         self.horizontalLayout_4.addLayout(self.verticalLayout_21)
 
         self.verticalLayout_24 = QtWidgets.QVBoxLayout()
@@ -702,11 +693,11 @@ class Ui_MainWindow(object):
         self.freq_range10.setText(_translate("MainWindow", "10th Band"))
         self.label_4.setText(_translate("MainWindow", "After"))
         self.label_3.setText(_translate("MainWindow", "Spectrogram"))
-        self.checkBox_1.setText(_translate("MainWindow", "Purples"))
-        self.checkBox_2.setText(_translate("MainWindow", "Blues"))
-        self.checkBox_3.setText(_translate("MainWindow", "Greens"))
-        self.checkBox_4.setText(_translate("MainWindow", "Oranges"))
-        self.checkBox_5.setText(_translate("MainWindow", "Cool"))
+        self.radioButton1.setText(_translate("MainWindow", "Purples"))
+        self.radioButton2.setText(_translate("MainWindow", "Blues"))
+        self.radioButton3.setText(_translate("MainWindow", "Greens"))
+        self.radioButton4.setText(_translate("MainWindow", "Oranges"))
+        self.radioButton5.setText(_translate("MainWindow", "Cool"))
         self.spec_min_freq.setText(_translate("MainWindow", "TextLabel"))
         self.specLabel1.setText(_translate("MainWindow", "Minimum Frequency"))
         self.spec_max_freq.setText(_translate("MainWindow", "TextLabel"))
