@@ -698,9 +698,11 @@ class Ui_MainWindow(object):
         self.radioButton3.setText(_translate("MainWindow", "Greens"))
         self.radioButton4.setText(_translate("MainWindow", "Oranges"))
         self.radioButton5.setText(_translate("MainWindow", "Cool"))
-        self.spec_min_freq.setText(_translate("MainWindow", "TextLabel"))
+        min_val = self.specSlider1.value()
+        self.spec_min_freq.setText(_translate("MainWindow", str(min_val)))
         self.specLabel1.setText(_translate("MainWindow", "Minimum Frequency"))
-        self.spec_max_freq.setText(_translate("MainWindow", "TextLabel"))
+        max_val = self.specSlider2.value()
+        self.spec_max_freq.setText(_translate("MainWindow", str(max_val)))
         self.specLabel2.setText(_translate("MainWindow", "Maximum Frequency"))
 
         self.menuFile.setStatusTip(_translate("MainWindow", "Creates a new document"))
