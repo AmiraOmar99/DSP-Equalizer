@@ -219,8 +219,11 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         if max_index is None:
             max_index = int(np.where(self.frequencies == max_freq)[0])
 
-        modified_fft = np.fft.rfft(self.modified_data)
-        modified_fft = modified_fft[min_index:max_index+1]
+        modified_fft = np.abs(np.fft.rfft(self.modified_data))
+        for x in range(min_index,max_index+1):
+            modified_fft[x]=0
+
+        modified_fft = np.multiply(modified_fft,np.exp(1j * self.phase_spectrum))
         self.spec_mag = np.fft.irfft(modified_fft)
         self.open_window()
 
