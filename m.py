@@ -181,7 +181,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.actionRight.triggered.connect(lambda: self.signal_end(0))  ##scroll to Right
         self.actionSignal_End.triggered.connect(lambda: self.signal_end(1))
         self.actionPlay_as_fast_as_possible.triggered.connect(self.play_fast)
-        self.Export_pdf.triggered.connect(self.E_pdf)
+        self.Export_pdf.triggered.connect(self.save)
         self.actionSpectrogram.triggered.connect(self.spec_showhide)
         self.actionPlay_signal_with_sound.triggered.connect(self.play_sound)
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
@@ -223,18 +223,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         self.spec_min_freq.setText(str(min_freq))
         self.spec_max_freq.setText(str(max_freq))
-
-        if min_freq < min(self.frequencies):
-            min_index = 0
-
-        if max_freq > max(self.frequencies):
-            max_index = len(self.frequencies)
-
-        if min_index != 0:
-            min_index = int(np.where(self.frequencies == min_freq)[0])
-
-        if max_index is None:
-            max_index = int(np.where(self.frequencies == max_freq)[0])
+    
+        min_index = int(np.where(self.frequencies == min_freq)[0])
+        max_index = int(np.where(self.frequencies == max_freq)[0])
 
         modified_fft = np.abs(np.fft.rfft(self.modified_data))
         for x in range(min_index):
@@ -486,29 +477,23 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # delete closed signal
     def signal_closed(self, file_path):
-        # print(len(self.signals))
         del self.signals[file_path]
-        # print(len(self.signals))
 
-        # save signal plots
+    def im_save(self,plot_item,path):
+        # signal im save
+        plot_data = plot_item
+        QtGui.QApplication.processEvents()
+        exporter = pg.exporters.ImageExporter(plot_data)
+        exporter.parameters()['width'] = 500
+        name = path.split("/")[-1]
+        exporter.export(name + ".png")
 
+
+    # save signal plots
     def save(self):
-        for sig in self.signals:
-            # signal im save
-            plot_data = self.signals[sig].waveform
-            QtGui.QApplication.processEvents()
-            exporter = pg.exporters.ImageExporter(plot_data)
-            exporter.parameters()['width'] = 500
-            name = sig.split("/")[-1]
-            exporter.export(name + ".png")
-            fig = plt.figure()
-            plt.subplot(212)
-            data = self.signals[sig].data
-            plt.specgram(data, Fs=1000)
-            plt.xlabel('Time(sec)')
-            plt.ylabel('Frequency(Hz)')
-            fig.savefig(name + "s" + ".png")
-            plt.close(fig)
+        self.im_save(self.original_waveform.plotItem,self.path)
+        self.im_save(self.modified_waveform.plotItem,self.path+'m')
+        self.figure.savefig(self.path.split("/")[-1] + "s" + ".png")
 
     def E_pdf(self):
         #self.save()
@@ -590,10 +575,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         
         self.new_amp = new_band_1 + new_band_2 + new_band_3 + new_band_4 + new_band_5+new_band_6+new_band_7+new_band_8 + new_band_9 + new_band_10
         self.inverse_fft()
-        #print(new_band_1)
-        #print(len(new_band_1))
-        #print(self.new_amp[20]/self.magnitude_spectrum[20])
-        # print(len(new_amp))
+
 
     def inverse_fft(self):
         fft = np.multiply(self.new_amp, np.exp(1j * self.phase_spectrum))
@@ -603,7 +585,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.verticalLayout_7.removeWidget(self.modified_waveform)
         #update 
         self.create_signal()
-        #print(self.modified_waveform)
         self.spec_range()
         self.save_sig()
 
