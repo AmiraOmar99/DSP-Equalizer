@@ -224,7 +224,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         self.spec_min_freq.setText(str(min_freq))
         self.spec_max_freq.setText(str(max_freq))
-    
+
         min_index = int(np.where(self.frequencies == min_freq)[0])
         max_index = int(np.where(self.frequencies == max_freq)[0])
 
@@ -369,14 +369,14 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
     # for plotting after reading signal
     def plot(self, data):
         data_plot = PlotWidget()
-        x_range = [min(data), min(data) + 2000]
+        x_range = [0, 2000]
         x = np.arange(0, len(self.original_data), 1)
         data_plot.showGrid(x=True, y=True)
         data_plot.enableAutoRange(x=False, y=True)
         p = data_plot.plot(pen='b', width=0.1)
         p.setData(x, data)
-        data_plot.getViewBox().setLimits(xMin=min(data))
-        data_plot.setXRange(x_range[0], x_range[1])
+        # data_plot.getViewBox().setLimits(xMin=min(data))
+        data_plot.setXRange(x_range[0], x_range[1],padding=0.005)
         #print(data_plot)
         return data_plot
 
@@ -420,9 +420,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                 if self.pause == 1:
                     break
                 self.original_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i)
+                                                 starting_x[1] + step * i,padding=0.005)
                 self.modified_waveform.setXRange(starting_x[0] + step * i,
-                                                 starting_x[1] + step * i)  #
+                                                 starting_x[1] + step * i,padding=0.005)  #
 
                 QtWidgets.QApplication.processEvents()
                 # x_end= x_end + step
@@ -446,8 +446,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # get original xrange
         x_range = [min(self.original_data), min(self.original_data) + 2000]
         if mode == 1:  # start of the signal
-            self.original_waveform.setXRange(x_range[0], x_range[1])
-            self.modified_waveform.setXRange(x_range[0], x_range[1])  #
+            self.original_waveform.setXRange(x_range[0], x_range[1],padding=0.005)
+            self.modified_waveform.setXRange(x_range[0], x_range[1],padding=0.005)  #
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
             x_end = self.original_waveform.getAxis("bottom").range[1]
@@ -456,8 +456,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             if (x_start - 10) < 0:
                 self.signal_beginning(1)
             else:
-                self.original_waveform.setXRange(x_start - 10, x_end - 20)
-                self.modified_waveform.setXRange(x_start - 10, x_end - 20)  #
+                self.original_waveform.setXRange(x_start - 10, x_end - 20,padding=0.005)
+                self.modified_waveform.setXRange(x_start - 10, x_end - 20,padding=0.005)  #
 
     # to signal end
     def signal_end(self, mode):
@@ -465,19 +465,19 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # set xrange to be
         if mode == 1:
             x_end = len(self.original_data)
-            self.original_waveform.setXRange(x_end - 2000, x_end)
-            self.modified_waveform.setXRange(x_end - 2000, x_end)
+            self.original_waveform.setXRange(x_end - 2000, x_end,padding=0.005)
+            self.modified_waveform.setXRange(x_end - 2000, x_end,padding=0.005)
 
         else:
             x_start = self.original_waveform.getAxis("bottom").range[0]
             x_end = self.original_waveform.getAxis("bottom").range[1]
-            # print(x_start)
-            # print(x_end)
+            print(x_start)
+            print(x_end)
             if (x_end + 10) > len(self.original_data):
                 self.signal_end(1)
             else:
-                self.original_waveform.setXRange(x_start + 20, x_end + 10)
-                self.modified_waveform.setXRange(x_start + 20, x_end + 10)
+                self.original_waveform.setXRange(x_start + 20, x_end + 10,padding=0.005)
+                self.modified_waveform.setXRange(x_start + 20, x_end + 10,padding=0.005)
 
     # delete closed signal
     def signal_closed(self, file_path):
