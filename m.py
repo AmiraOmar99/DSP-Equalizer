@@ -252,21 +252,24 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     def open_sig(self):
         #print("open_sig")
-        self.path = PyQt5.QtWidgets.QFileDialog.getOpenFileName(None, 'Open', None, "WAV (*.wav)")[0]
-        if self.path:
+        path = PyQt5.QtWidgets.QFileDialog.getOpenFileName(None, 'Open', None, "WAV (*.wav)")[0]
+        if path:
             if len(self.signals_windows) == 0:
-                self.signals_windows[self.path] = self
+                self.signals_windows[path] = self
+                self.signals_windows[path].path=path
+                self.signals_windows[path]
             else:
-                self.signals_windows[self.path] = OtherWindows()
-                self.signals_windows[self.path].config(self.path)
+                self.signals_windows[path] = OtherWindows()
+                self.signals_windows[path].path=path
+                self.signals_windows[path].config(path)
 
             # load .wav data
-            self.signals_windows[self.path].original_data, self.signals_windows[self.path].sample_rate = sf.read(self.path)
-            self.signals_windows[self.path].modified_data = self.signals_windows[self.path].original_data
-            self.signals_windows[self.path].spec_mag = self.signals_windows[self.path].modified_data
+            self.signals_windows[path].original_data, self.signals_windows[path].sample_rate = sf.read(path)
+            self.signals_windows[path].modified_data = self.signals_windows[path].original_data
+            self.signals_windows[path].spec_mag = self.signals_windows[path].modified_data
 
             # create signal object and plot
-            self.signals_windows[self.path].create_signal()
+            self.signals_windows[path].create_signal()
 
     # open for signals .csv
     def open_csv(self):
@@ -492,27 +495,26 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     # save signal plots
     def save(self):
+        print(self.path)
         self.im_save(self.original_waveform.plotItem,self.path)
         self.im_save(self.modified_waveform.plotItem,self.path+'m')
         self.figure.savefig(self.path.split("/")[-1] + "s" + ".png")
 
     def E_pdf(self):
         self.save()
-        for i in self.signals_windows:
-            self.pins[i] = Pin()
-            self.pins[i].getPins(i)
+        self.pins = Pin()
+        self.pins.getPins(self.path)
         # print(self.pins)
 
         fileName = 'pdfTable.pdf'
 
-        self.pdf = SimpleDocTemplate(fileName, pagesize=letter)
+        pdf = SimpleDocTemplate(fileName, pagesize=letter)
 
         # append table elements
         self.elems = []
-        for pin in self.pins:
-            self.pins[pin].genPinTable()  # generate element for each signal
-            self.elems.append(self.pins[pin].pinElemTable)
-        self.pdf.build(self.elems)
+        self.pins.genPinTable()  # generate element for each signal
+        self.elems.append(self.pins.pinElemTable)
+        pdf.build(self.elems)
         print("Report is done")
 
     def spectro_draw(self,colorcmap):
