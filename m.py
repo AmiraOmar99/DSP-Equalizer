@@ -185,7 +185,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.actionLeft.triggered.connect(lambda: self.signal_beginning(0))  ##scroll to left
         self.actionRight.triggered.connect(lambda: self.signal_end(0))  ##scroll to Right
         self.actionSignal_End.triggered.connect(lambda: self.signal_end(1))
-        self.actionPlay_as_fast_as_possible.triggered.connect(self.play_fast)
+        self.actionSpeed_Up.triggered.connect(self.Speed_Up)
         self.Export_pdf.triggered.connect(self.E_pdf)
         self.actionSpectrogram.triggered.connect(self.spec_showhide)
         self.actionPlay_signal_with_sound.triggered.connect(self.play_sound)
@@ -436,7 +436,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
     def play_fast(self):
         self.pause_signal()
-        self.play_signal(40)
+        self.play_signal(1)
         
 
     # pause function
