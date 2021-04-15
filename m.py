@@ -279,49 +279,11 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             #     # create signa object and plot
             #     self.create_signal(path, data)
     def generate_band(self):
-        # self.bands=[]
-        # for i in range (10):
-        #    self.bands.append([])
-
-        self.b1=[]
-        self.b2=[]
-        self.b3=[]
-        self.b4=[]
-        self.b5=[]
-        self.b6=[]
-        self.b7=[]
-        self.b8=[]
-        self.b9=[]
-        self.b10=[]
-        freqs=np.sort(self.frequencies)
-
-
-
-        for freq in self.frequencies:
-            if freqs[0] <= freq < (freqs[-1]/10):
-                self.b1.append(freq)
-            if (freqs[-1]/10) <= freq < (2*(freqs[-1]/10)):
-                self.b2.append(freq)
-            if (2*(freqs[-1]/10)) <= freq < (3*(freqs[-1]/10)):
-                self.b3.append(freq)
-            if (3*(freqs[-1]/10)) <= freq < (4*(freqs[-1]/10)):
-                self.b4.append(freq)
-            if (4*(freqs[-1]/10)) <= freq < (5*(freqs[-1]/10)):
-                self.b5.append(freq)
-            if (5*(freqs[-1]/10)) <= freq < (6*(freqs[-1]/10)):
-                self.b6.append(freq)
-            if (6*(freqs[-1]/10)) <= freq < (7*(freqs[-1]/10)):
-                self.b7.append(freq)
-            if (7*(freqs[-1]/10)) <= freq < (8*(freqs[-1]/10)):
-                self.b8.append(freq)
-            if (8*(freqs[-1]/10)) <= freq < (9*(freqs[-1]/10)):
-                self.b9.append(freq)
-            if (9*(freqs[-1]/10)) <= freq <= (freqs[-1]):
-                self.b10.append(freq)
-        # print(b10)
+        self.bands=[]
+        for i in range (10):
+            self.bands.append([])
     
     def get_amplitude(self):
-        # b = len(self.b1)
         b=int(len(self.frequencies)/10)
         As=[]
         self.A1=list(self.magnitude_spectrum[:b])
@@ -574,7 +536,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         new_band_1 = [a * current_val_1 for a in self.A1]
         new_band_2 = [a * current_val_2 for a in self.A2]
-        #new_band_2 = [a * current_val_2 for a in self.signals[self.selected_signal].A2]
         new_band_3 = [a * current_val_3 for a in self.A3]
         new_band_4 = [a * current_val_4 for a in self.A4]
         new_band_5 = [a * current_val_5 for a in self.A5]
