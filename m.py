@@ -593,6 +593,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.create_signal()
         #print(self.modified_waveform)
         self.spec_range()
+        self.save_sig()
 
     def save_sig(self):
         write("newData.wav", self.sample_rate, self.modified_data.astype(np.float32))
