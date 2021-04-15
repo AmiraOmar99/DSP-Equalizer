@@ -28,6 +28,8 @@ import mainlayout
 from spectrogram import Ui_OtherWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from scipy.io.wavfile import write
+#import simpleaudio as sa
+import winsound
 
 
 class Pin():
@@ -181,6 +183,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.actionPlay_as_fast_as_possible.triggered.connect(self.play_fast)
         self.Export_pdf.triggered.connect(self.E_pdf)
         self.actionSpectrogram.triggered.connect(self.spec_showhide)
+        self.actionPlay_signal_with_sound.triggered.connect(self.play_sound)
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
         self.radioButton1.toggled.connect(self.color_pallette)
         self.radioButton2.toggled.connect(self.color_pallette)
@@ -349,7 +352,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.specSlider2.setMaximum(self.frequencies[length-1])
         self.specSlider2.setSingleStep(100)
         self.specSlider2.setPageStep(100)
-        print(self.frequencies[length-1])
         self.specSlider2.setValue(self.frequencies[length-1])
 
         #minimum Freq
@@ -398,7 +400,6 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         center_x = (self.original_waveform.getAxis("bottom").range[0] +
                     self.original_waveform.getAxis("bottom").range[1]) / 2
         center_y = 0
-        print("zooooom")
         # zoom in
         if mode == 1:
             self.original_waveform.getViewBox().scaleBy(y=0.9, x=0.9, center=(center_x, center_y))
@@ -436,11 +437,13 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
     def play_fast(self):
         self.pause_signal()
         self.play_signal(40)
+        
 
     # pause function
     def pause_signal(self):
         self.pause = 1
         self.played = 0
+        winsound.PlaySound(None, winsound.SND_ASYNC)
 
     # to signal beginning
     def signal_beginning(self, mode):
@@ -602,9 +605,16 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.create_signal()
         #print(self.modified_waveform)
         self.spec_range()
+        self.save_sig()
 
     def save_sig(self):
-        write("newData.WAV", self.sample_rate, self.modified_data)
+        write("newData.wav", self.sample_rate, self.modified_data.astype(np.float32))
+
+    def play_sound(self):
+        self.save_sig()
+        winsound.PlaySound("newData.wav", winsound.SND_ASYNC | winsound.SND_ALIAS )
+
+
 
 
 class OtherWindows(Window):
