@@ -50,30 +50,41 @@ class Pin():
 
         # 1) Build Structure
 
-        titleTable = Table([[self.title]]
-                           , pinElemWidth)
+        #titleTable = Table([[self.title]] , pinElemWidth)
 
-        S_picture = Image(self.SignalPath[0])
-        S_picture.drawWidth = 200
-        S_picture.drawHeight = 100
+        #S_picture_before = Image(self.SignalPath[0])
+        S_picture_before = Image("test1.png")
+        S_picture_before.drawWidth = 200
+        S_picture_before.drawHeight = 100
 
-        G_picture = Image(self.GramPath[0])
+        #S_picture_after = Image(self.SignalPath[0])
+        S_picture_after = Image("test1.png")
+        S_picture_after.drawWidth = 200
+        S_picture_after.drawHeight = 100
+
+        #G_picture = Image(self.GramPath[0])
+        G_picture = Image("test1.png")
         G_picture.drawWidth = 200
         G_picture.drawHeight = 100
 
-        picSignal = Table([
-            [S_picture]
+        picSignal_before = Table([
+            [S_picture_before]
+        ], 250, 125)
+        picSignal_after = Table([
+            [S_picture_after]
         ], 250, 125)
         picGram = Table([
             [G_picture]
         ], 250, 125)
 
         PicTable = Table([
-            [picSignal, picGram]
+            [picSignal_before],
+            [picSignal_after],
+            [picGram]
         ], [250, 250])
 
         self.pinElemTable = Table([
-            [titleTable],
+            #[titleTable],
             [PicTable]
         ], pinElemWidth)
 
@@ -94,14 +105,15 @@ class Pin():
             ('TOPPADDING', (0, 0), (-1, -1), 0),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
         ])
-        titleTable.setStyle(titleTableStyle)
+        #titleTable.setStyle(titleTableStyle)
 
         picTableStyle = TableStyle([
             ('LEFTPADDING', (0, 0), (-1, -1), 15),
 
             ('TOPPADDING', (0, 0), (-1, -1), 0),
         ])
-        picSignal.setStyle(picTableStyle)
+        picSignal_before.setStyle(picTableStyle)
+        picSignal_after.setStyle(picTableStyle)
         picGram.setStyle(picTableStyle)
 
         pinElemTableStyle = TableStyle([
@@ -496,8 +508,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             plt.close(fig)
 
     def E_pdf(self):
-        self.save()
-        for i in self.signals:
+        #self.save()
+        for i in self.signals_windows:
             self.pins[i] = Pin()
             self.pins[i].getPins(i)
         # print(self.pins)
