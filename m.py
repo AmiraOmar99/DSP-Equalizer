@@ -167,6 +167,10 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.played = 0  # playing flag
         self.pause = 0  # pause flag
 
+        self.sliders = [self.eq_Slider_1,self.eq_Slider_2,self.eq_Slider_3,self.eq_Slider_4,self.eq_Slider_5,self.eq_Slider_6,self.eq_Slider_7,self.eq_Slider_8,self.eq_Slider_9,self.eq_Slider_10]
+        self.current_values=[]
+        
+
         # Actions
         self.actionOpen_signal.triggered.connect(self.open_sig)
         self.actionSave_signal_as.triggered.connect(self.save_sig)
@@ -195,20 +199,13 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.specSlider1.valueChanged.connect(self.spec_range)
         self.specSlider2.valueChanged.connect(self.spec_range)
 
-        self.eq_Slider_1.valueChanged.connect(self.slider_step)
-        self.eq_Slider_2.valueChanged.connect(self.slider_step)
-        self.eq_Slider_3.valueChanged.connect(self.slider_step)
-        self.eq_Slider_4.valueChanged.connect(self.slider_step)
-        self.eq_Slider_5.valueChanged.connect(self.slider_step)
-        self.eq_Slider_6.valueChanged.connect(self.slider_step)
-        self.eq_Slider_7.valueChanged.connect(self.slider_step)
-        self.eq_Slider_8.valueChanged.connect(self.slider_step)
-        self.eq_Slider_9.valueChanged.connect(self.slider_step)
-        self.eq_Slider_10.valueChanged.connect(self.slider_step)
+        for slider in self.sliders:
+            slider.valueChanged.connect(self.slider_step)
 
 
         self.showMaximized()
         self.show()
+
 
     def spec_showhide(self):
         if self.frame_3.isVisible():
@@ -282,6 +279,10 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             #     # create signa object and plot
             #     self.create_signal(path, data)
     def generate_band(self):
+        # self.bands=[]
+        # for i in range (10):
+        #    self.bands.append([])
+
         self.b1=[]
         self.b2=[]
         self.b3=[]
@@ -293,6 +294,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.b9=[]
         self.b10=[]
         freqs=np.sort(self.frequencies)
+
+
+
         for freq in self.frequencies:
             if freqs[0] <= freq < (freqs[-1]/10):
                 self.b1.append(freq)
@@ -317,7 +321,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # print(b10)
     
     def get_amplitude(self):
-        b = len(self.b1)
+        # b = len(self.b1)
+        b=int(len(self.frequencies)/10)
         As=[]
         self.A1=list(self.magnitude_spectrum[:b])
         self.A2=list(self.magnitude_spectrum[b:2*b])
@@ -360,7 +365,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         # print(self.fft)
         #equalizer
-        self.generate_band()
+        # self.generate_band()
         self.get_amplitude()
         #self.play_signal(3)  # to be changed to step
 
@@ -542,6 +547,9 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.spectro_draw(colors[0])
 
     def slider_step(self):
+        # for index, slider in enumerate(self.sliders)
+        #     self.current_values[index] = slider.value()
+
         current_val_1 = self.eq_Slider_1.value()
         current_val_2= self.eq_Slider_2.value()
         current_val_3 = self.eq_Slider_3.value()
