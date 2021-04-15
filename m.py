@@ -35,14 +35,16 @@ import winsound
 class Pin():
     def __init__(self):
         self.title = ''
-        self.SignalPath = []
+        self.SignalPath_before = []
+        self.SignalPath_after = []
         self.GramPath = []
         self.pinElementTable = None
 
     def getPins(self, path):
         name = path.split("/")[-1]
         self.title = name
-        self.SignalPath = [name + ".png"]
+        self.SignalPath_before = [name + ".png"]
+        self.SignalPath_after = [name + "m" + ".png"]
         self.GramPath = [name + "s" + ".png"]
 
     def genPinTable(self):
@@ -52,20 +54,20 @@ class Pin():
 
         # 1) Build Structure
 
-        #titleTable = Table([[self.title]] , pinElemWidth)
+        titleTable = Table([[self.title]] , pinElemWidth)
 
-        #S_picture_before = Image(self.SignalPath[0])
-        S_picture_before = Image("test1.png")
+        S_picture_before = Image(self.SignalPath_before[0])
+        #S_picture_before = Image("test1.png")
         S_picture_before.drawWidth = 200
         S_picture_before.drawHeight = 100
 
-        #S_picture_after = Image(self.SignalPath[0])
-        S_picture_after = Image("test1.png")
+        S_picture_after = Image(self.SignalPath_after[0])
+        #S_picture_after = Image("test1.png")
         S_picture_after.drawWidth = 200
         S_picture_after.drawHeight = 100
 
-        #G_picture = Image(self.GramPath[0])
-        G_picture = Image("test1.png")
+        G_picture = Image(self.GramPath[0])
+        #G_picture = Image("test1.png")
         G_picture.drawWidth = 200
         G_picture.drawHeight = 100
 
@@ -80,13 +82,12 @@ class Pin():
         ], 250, 125)
 
         PicTable = Table([
-            [picSignal_before],
-            [picSignal_after],
+            [picSignal_before, picSignal_after],
             [picGram]
         ], [250, 250])
 
         self.pinElemTable = Table([
-            #[titleTable],
+            [titleTable],
             [PicTable]
         ], pinElemWidth)
 
@@ -107,7 +108,7 @@ class Pin():
             ('TOPPADDING', (0, 0), (-1, -1), 0),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
         ])
-        #titleTable.setStyle(titleTableStyle)
+        titleTable.setStyle(titleTableStyle)
 
         picTableStyle = TableStyle([
             ('LEFTPADDING', (0, 0), (-1, -1), 15),
@@ -181,7 +182,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.actionRight.triggered.connect(lambda: self.signal_end(0))  ##scroll to Right
         self.actionSignal_End.triggered.connect(lambda: self.signal_end(1))
         self.actionPlay_as_fast_as_possible.triggered.connect(self.play_fast)
-        self.Export_pdf.triggered.connect(self.save)
+        self.Export_pdf.triggered.connect(self.E_pdf)
         self.actionSpectrogram.triggered.connect(self.spec_showhide)
         self.actionPlay_signal_with_sound.triggered.connect(self.play_sound)
         self.actionTime_FFT.triggered.connect(self.inverse_fft)
@@ -496,7 +497,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.figure.savefig(self.path.split("/")[-1] + "s" + ".png")
 
     def E_pdf(self):
-        #self.save()
+        self.save()
         for i in self.signals_windows:
             self.pins[i] = Pin()
             self.pins[i].getPins(i)
