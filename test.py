@@ -160,6 +160,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.modified_waveform = None
         self.pallette = 'plasma'
 
+        self.range=[0,2000]
+
         # self.signal = None  # have the created signal object
         self.pins = {}  # have signal path and created pin object
         self.signals_fft = {}
@@ -170,6 +172,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
 
         self.sliders = [self.eq_Slider_1,self.eq_Slider_2,self.eq_Slider_3,self.eq_Slider_4,self.eq_Slider_5,self.eq_Slider_6,self.eq_Slider_7,self.eq_Slider_8,self.eq_Slider_9,self.eq_Slider_10]
         self.gains=[self.gain1,self.gain2,self.gain3,self.gain4,self.gain5,self.gain6,self.gain7,self.gain8,self.gain9,self.gain10]
+        self.freq_text=[self.freq_range1,self.freq_range2,self.freq_range3,self.freq_range4,self.freq_range5,self.freq_range6,self.freq_range7,self.freq_range8,self.freq_range9,self.freq_range10]
+
         self.current_values=[]
         self.new_amp=[]
         self.As = []
@@ -216,25 +220,46 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         else:
             self.frame_3.setVisible(True)
 
+    # def spec_range(self):
+    #     min_index = None
+    #     max_index = None
+    #     min_freq = self.specSlider1.value()
+    #     max_freq = self.specSlider2.value()
+
+    #     self.spec_min_freq.setText(str(min_freq))
+    #     self.spec_max_freq.setText(str(max_freq))
+
+    #     min_index = int(np.where(self.frequencies == min_freq)[0])
+    #     max_index = int(np.where(self.frequencies == max_freq)[0])
+
+    #     modified_fft = np.abs(np.fft.rfft(self.modified_data))
+    #     for x in range(min_index):
+    #         modified_fft[x]=0
+    #     for x in range(max_index,len(self.frequencies)):
+    #         modified_fft[x]=0
+
+    #     modified_fft = np.multiply(modified_fft,np.exp(1j * self.phase_spectrum))
+    #     self.spec_mag = np.fft.irfft(modified_fft)
+    #     self.open_window()
+
+    def band_text(self):
+        for i , freq in enumerate(self.freq_text):
+            freq.setText(str((i+1)*max(self.frequencies)//10))
+
     def spec_range(self):
         min_index = None
         max_index = None
-        min_freq = self.specSlider1.value()
-        max_freq = self.specSlider2.value()
+        self.min_freq = self.specSlider1.value()
+        self.max_freq = self.specSlider2.value()
 
-        self.spec_min_freq.setText(str(min_freq))
-        self.spec_max_freq.setText(str(max_freq))
+        self.spec_min_freq.setText(str(self.min_freq))
+        self.spec_max_freq.setText(str(self.max_freq))
+        
+        min_index = int(np.where(self.frequencies == self.min_freq)[0])
+        max_index = int(np.where(self.frequencies == self.max_freq)[0])
 
-        min_index = int(np.where(self.frequencies == min_freq)[0])
-        max_index = int(np.where(self.frequencies == max_freq)[0])
-
-        modified_fft = np.abs(np.fft.rfft(self.modified_data))
-        for x in range(min_index):
-            modified_fft[x]=0
-        for x in range(max_index,len(self.frequencies)):
-            modified_fft[x]=0
-
-        modified_fft = np.multiply(modified_fft,np.exp(1j * self.phase_spectrum))
+        modified_fft = np.fft.rfft(self.modified_data)
+        modified_fft = modified_fft[min_index:max_index+1]
         self.spec_mag = np.fft.irfft(modified_fft)
         self.open_window()
 
@@ -301,7 +326,10 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.modified_waveform = self.plot(self.modified_data)
         self.verticalLayout_6.addWidget(self.original_waveform)
         self.verticalLayout_7.addWidget(self.modified_waveform)
+        self.min_freq=min(self.frequencies)
+        self.max_freq=max(self.frequencies)
         self.spec_sliders()
+        self.band_text()
         self.open_window()
         self.frame.show()
         # self.play_signal(self.modified_data, self.modified_waveform, 3)  # to be changed to step
@@ -315,14 +343,13 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
     # for plotting after reading signal
     def plot(self, data):
         data_plot = PlotWidget()
-        x_range = [0, 2000]
         x = np.arange(0, len(self.original_data), 1)
         data_plot.showGrid(x=True, y=True)
         data_plot.enableAutoRange(x=False, y=True)
         p = data_plot.plot(pen='b', width=0.1)
         p.setData(x, data)
-        data_plot.getViewBox().setLimits(xMin=min(self.original_data))
-        data_plot.setXRange(x_range[0], x_range[1],padding=0.005)
+        # data_plot.getViewBox().setLimits(xMin=min(self.original_data))
+        data_plot.setXRange(self.range[0], self.range[1],padding=0.005)
         return data_plot
 
     # fft for signal
@@ -348,7 +375,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.original_waveform.getViewBox().scaleBy(y=(1 / 0.9), x=(1 / 0.9), center=(center_x, center_y))
             self.modified_waveform.getViewBox().scaleBy(y=(1 / 0.9), x=(1 / 0.9), center=(center_x, center_y))
 
-    # play function and play as fast as possible
+   # play function and play as fast as possible
     def play_signal(self, mode):
         self.pause = 0
         self.played = 1
@@ -364,8 +391,8 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         if starting_x[1] < sig_length:
             i = 1
             # play signal
-            print(starting_x[0])
-            while x_end < sig_length and starting_x[0] >= min(self.original_data):
+            print(self.range[0])
+            while x_end < sig_length :
                 # break if pause is pressed
                 if self.pause == 1:
                     break
@@ -373,10 +400,13 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
                                                  starting_x[1] + self.step * i,padding=0.005)
                 self.modified_waveform.setXRange(starting_x[0] + self.step * i,
                                                  starting_x[1] + self.step * i,padding=0.005)  #
+               
+                self.range= self.original_waveform.getAxis("bottom").range
                 QtWidgets.QApplication.processEvents()
                 # x_end= x_end + step
                 x_end = self.original_waveform.getAxis("bottom").range[1]
                 i += 1
+
 
     def speed_up(self):
         self.pause_signal()
@@ -387,6 +417,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
             self.pause_signal()
             self.play_signal(-1)
             
+
 
     # pause function
     def pause_signal(self):
@@ -465,6 +496,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         # clearing old figure
         self.figure.clear()
         plt.specgram(self.spec_mag, Fs=self.sample_rate,cmap=colorcmap)
+        plt.axis(ymin=self.min_freq, ymax=self.max_freq)
         plt.xlabel('Time(sec)')
         plt.ylabel('Frequency(Hz)')
         self.canvas.draw()
@@ -508,6 +540,7 @@ class Window(QtWidgets.QMainWindow, mainlayout.Ui_MainWindow):
         self.verticalLayout_6.removeWidget(self.original_waveform)
         self.verticalLayout_7.removeWidget(self.modified_waveform)
         #update 
+        
         self.create_signal()
         self.spec_range()
         self.save_sig()
