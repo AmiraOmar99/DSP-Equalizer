@@ -14,4 +14,4 @@
 
 <br>
 
-**Run equalizer.py to run the GUI** 
+**Run test.py to run the GUI** 
